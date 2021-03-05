@@ -62,21 +62,21 @@ class Board:
         if(player_right not in self.walls):
             if(player_right in node.boxes): 
                 if(self.can_push_box(player_right)): 
-                    moves.append(Node(player_right, self.get_new_boxes(node.boxes, player_right, RIGHT))) #and player can push it    
+                    moves.append(Node(player_right, self.get_new_boxes(node.boxes, player_right, RIGHT)))  
             else:
                 moves.append(Node(player_right, node.boxes))    
             
         if(player_up not in self.walls):
             if(player_up in node.boxes): 
                 if(self.can_push_box(player_up)):   
-                    moves.append(Node(player_up, self.get_new_boxes(node.boxes, player_up, RIGHT))) #and player can push it
+                    moves.append(Node(player_up, self.get_new_boxes(node.boxes, player_up, UP)))
             else: 
                 moves.append(Node(player_up, node.boxes))         
                 
         if(player_down not in self.walls):
             if(player_down in node.boxes): 
                 if(self.can_push_box(player_down)): 
-                 moves.append(Node(player_down, self.get_new_boxes(node.boxes, player_down, RIGHT))) #and player can push it  
+                 moves.append(Node(player_down, self.get_new_boxes(node.boxes, player_down, DOWN))) 
             else: 
                 moves.append(Node(player_down, node.boxes))
 
@@ -84,18 +84,25 @@ class Board:
 
     def get_new_boxes(self, boxes, player, direction):
         new_boxes = boxes.copy()
-
-        for b in new_boxes: 
-            if(b == player):
-                if(direction == LEFT):
-                    b[0] = player[0] - 1
-                elif(direction == RIGHT):
-                    b[0] = player[0] + 1
-                elif(direction == UP):
-                    b[1] = player[0] - 1
-                elif(direction == DOWN):
-                    b[1] = player[0] + 1        
         
+        for b in new_boxes: 
+            aux = list(b)
+            
+            if(b == player):
+                new_boxes.remove(b)
+                 
+                if(direction == LEFT):
+                    aux[0] = player[0] - 1
+                elif(direction == RIGHT):
+                    aux[0] = player[0] + 1
+                elif(direction == UP):  
+                    aux[1] = player[1] - 1 
+                elif(direction == DOWN):
+                    aux[1] = player[1] + 1    
+                     
+            b = tuple(aux)
+            new_boxes.append(b) 
+               
         return new_boxes
     
     def can_push_box(self, player):
