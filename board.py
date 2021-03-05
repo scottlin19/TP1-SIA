@@ -52,7 +52,7 @@ class Board:
         #check there are no walls around. If there is box check if player can move it
         if(player_left not in self.walls):
             if(player_left in node.boxes): #box next to player
-                if(self.can_push_box(player_left)): 
+                if(self.can_push_box(player_left, LEFT)): 
                     #hay una box con las mismas coordenadas del player_left --> a esa le tengo que restar x y dejar y igual porque la estoy moviendo a la izq
                     moves.append(Node(player_left, self.get_new_boxes(node.boxes, player_left, LEFT))) #and player can push it
                 #else move is not possible
@@ -61,21 +61,21 @@ class Board:
                 
         if(player_right not in self.walls):
             if(player_right in node.boxes): 
-                if(self.can_push_box(player_right)): 
+                if(self.can_push_box(player_right, RIGHT)): 
                     moves.append(Node(player_right, self.get_new_boxes(node.boxes, player_right, RIGHT)))  
             else:
                 moves.append(Node(player_right, node.boxes))    
             
         if(player_up not in self.walls):
             if(player_up in node.boxes): 
-                if(self.can_push_box(player_up)):   
+                if(self.can_push_box(player_up, UP)):   
                     moves.append(Node(player_up, self.get_new_boxes(node.boxes, player_up, UP)))
             else: 
                 moves.append(Node(player_up, node.boxes))         
                 
         if(player_down not in self.walls):
             if(player_down in node.boxes): 
-                if(self.can_push_box(player_down)): 
+                if(self.can_push_box(player_down, DOWN)): 
                  moves.append(Node(player_down, self.get_new_boxes(node.boxes, player_down, DOWN))) 
             else: 
                 moves.append(Node(player_down, node.boxes))
@@ -105,8 +105,19 @@ class Board:
                
         return new_boxes
     
-    def can_push_box(self, player):
-        return True
+    def can_push_box(self, moved_player, direction):
+        
+        if(direction == LEFT):
+            pushed_box = (moved_player[0] -1, moved_player[1])
+        elif(direction == RIGHT):
+            pushed_box = (moved_player[0] + 1, moved_player[1])
+        elif(direction == UP):
+            pushed_box = (moved_player[0], moved_player[1] - 1 )
+        else:  
+            pushed_box = (moved_player[0], moved_player[1] + 1)
+            
+        return pushed_box not in self.walls and pushed_box not in self.boxes
+        
 
     def append_move(moves, direction, player, boxes): 
         if(player in boxes): #box next to player
