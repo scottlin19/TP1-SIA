@@ -1,5 +1,5 @@
 game.py
-sokoban.py
+sokoban_visual.py
 images/brick.png
 images/character.png
 images/coin.png
