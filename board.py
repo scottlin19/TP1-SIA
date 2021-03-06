@@ -1,5 +1,6 @@
 #Logica del juego. Tiene todas las posiciones 
 from node import Node
+from sokoban_render import render
 
 LEFT = 'l'
 RIGHT = 'r'
@@ -9,45 +10,47 @@ DOWN = 'd'
 class Board: 
 
     def __init__(self, filename):
-        self.matrix = []
         file = open(filename, "r")
         self.walls = []
         self.boxes = []
         self.goals = []
-        self.player = None
+        self.player = []
+        min_and_max = self.fill_board(file)
+        # print(min_and_max)
+        render(min_and_max[0], min_and_max[1], self.walls, self.boxes, self.goals, self.player)
 
-        self.fill_board(file) 
-        moves= self.get_possible_moves(Node(self.player, self.boxes))
-        for m in moves:
-            print(m)
+        # moves= self.get_possible_moves(Node(self.player, self.boxes))
+        # for m in moves:
+        #     print(m)
 
 
     def fill_board(self, file):
         lines = [line.strip("\n") for line in file if line != "\n"]
         x = 0
         y = 0
-        for line in lines:
+        for line in reversed(lines): # el reversed es para que despues no se renderee al reves
             x = 0
             for char in line:
                 if(char == "#"):
-                    self.walls.append((x,y))
+                    self.walls.append([x,y])
                 elif char == "^":
-                    self.player = (x,y)
+                    self.player.append([x,y])
                 elif char == "o":
-                    self.goals.append((x,y))
+                    self.goals.append([x,y])
                 elif char == "x":
-                    self.boxes.append((x,y))
+                    self.boxes.append([x,y])
                 x += 1
             y += 1
+        return [0,0], [x, y-1]
 
     def get_possible_moves(self, node):
         moves = [] #moves is an array of Nodes
 
         #calculate all moves 
-        player_left = (node.player[0] - 1, node.player[1])  
-        player_right = (node.player[0] + 1, node.player[1])
-        player_up = (node.player[0], node.player[1] - 1)
-        player_down = (node.player[0], node.player[1] + 1)
+        player_left = [node.player[0] - 1, node.player[1]]
+        player_right = [node.player[0] + 1, node.player[1]]
+        player_up = [node.player[0], node.player[1] - 1]
+        player_down = [node.player[0], node.player[1] + 1]
 
         #check there are no walls around. If there is box check if player can move it
         if(player_left not in self.walls):
@@ -108,13 +111,13 @@ class Board:
     def can_push_box(self, moved_player, direction):
         
         if(direction == LEFT):
-            pushed_box = (moved_player[0] -1, moved_player[1])
+            pushed_box = [moved_player[0] -1, moved_player[1]]
         elif(direction == RIGHT):
-            pushed_box = (moved_player[0] + 1, moved_player[1])
+            pushed_box = [moved_player[0] + 1, moved_player[1]]
         elif(direction == UP):
-            pushed_box = (moved_player[0], moved_player[1] - 1 )
+            pushed_box = [moved_player[0], moved_player[1] - 1]
         else:  
-            pushed_box = (moved_player[0], moved_player[1] + 1)
+            pushed_box = [moved_player[0], moved_player[1] + 1]
             
         return pushed_box not in self.walls and pushed_box not in self.boxes
         

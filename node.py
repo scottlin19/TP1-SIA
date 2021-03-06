@@ -7,4 +7,4 @@ class Node:
         self.boxes = boxes
 
     def __str__(self):
-        return "(%s,%s)"%(self.player, self.boxes) 
+        return "[%s,%s]"%(self.player, self.boxes) 
