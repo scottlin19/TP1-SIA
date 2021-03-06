@@ -20,7 +20,6 @@ class MyGame(arcade.Window):
     def setup(self, walls, boxes, goals, player):
         # Set up your game here
         self.asset_list = arcade.SpriteList()
-        print(player)
 
         self.boardPopulator(brick_filedir, walls)
         self.boardPopulator(box_filedir, boxes)
