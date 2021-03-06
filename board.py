@@ -1,6 +1,7 @@
 #Logica del juego. Tiene todas las posiciones 
 from node import Node
 from sokoban_render import render
+from bfs import bfs
 
 LEFT = 'l'
 RIGHT = 'r'
@@ -14,15 +15,15 @@ class Board:
         self.walls = []
         self.boxes = []
         self.goals = []
-        self.player = []
-        min_and_max = self.fill_board(file)
+        self.player = None
+        self.min_and_max = self.fill_board(file)
         # print(min_and_max)
 
-        moves= self.get_possible_moves(Node(self.player, self.boxes))
-        for m in moves:
-            print(m)
+        # moves= self.get_possible_moves(Node(self.player, self.boxes))
+        # for m in moves:
+        #     print(m)
 
-        render(min_and_max[0], min_and_max[1], self.walls, self.boxes, self.goals, self.player)
+        bfs(self)
 
 
     def fill_board(self, file):
@@ -35,7 +36,7 @@ class Board:
                 if(char == "#"):
                     self.walls.append([x,y])
                 elif char == "^":
-                    self.player.append([x,y])
+                    self.player = [x,y]
                 elif char == "o":
                     self.goals.append([x,y])
                 elif char == "x":
@@ -48,28 +49,30 @@ class Board:
         moves = [] #moves is an array of Nodes
 
         #calculate all moves 
-        player_left = [node.player[0][0] - 1, node.player[0][1]]
-        player_right = [node.player[0][0] + 1, node.player[0][1]]
-        player_up = [node.player[0][0], node.player[0][1] + 1]
-        player_down = [node.player[0][0], node.player[0][1] - 1]
+        player_left = [node.player[0] - 1, node.player[1]]
+        player_right = [node.player[0] + 1, node.player[1]]
+        player_up = [node.player[0], node.player[1] + 1]
+        player_down = [node.player[0], node.player[1] - 1]
 
-        self.check_move(moves, node.boxes, player_left, LEFT)
-        self.check_move(moves, node.boxes, player_right, RIGHT)
-        self.check_move(moves, node.boxes, player_up, UP)
-        self.check_move(moves, node.boxes, player_down, DOWN)
+        self.check_move(moves, node, player_left, LEFT)
+        self.check_move(moves, node, player_right, RIGHT)
+        self.check_move(moves, node, player_up, UP)
+        self.check_move(moves, node, player_down, DOWN)
 
         return moves
 
-    def check_move(self, moves, boxes, new_position, direction):
+    def check_move(self, moves, node, new_position, direction):
         #check there are no walls around. If there is box check if player can move it
         if(new_position not in self.walls):
-            if(new_position in boxes): #box next to player
+            aux = node.steps.copy()
+            aux.append(direction)
+            if(new_position in node.boxes): #box next to player
                 if(self.can_push_box(new_position, direction)): 
                     #hay una box con las mismas coordenadas del player_left --> a esa le tengo que restar x y dejar y igual porque la estoy moviendo a la izq
-                    moves.append(Node(new_position, self.get_new_boxes(boxes, new_position, direction))) #and player can push it
+                    moves.append(Node(new_position, self.get_new_boxes(node.boxes, new_position, direction), aux)) #and player can push it
                 #else move is not possible
             else: #there is no wall and no box
-                moves.append(Node(new_position, boxes))
+                moves.append(Node(new_position, node.boxes, aux))
 
 
     def get_new_boxes(self, boxes, player, direction):
@@ -107,16 +110,24 @@ class Board:
             pushed_box = [moved_player[0], moved_player[1] - 1]
             
         return pushed_box not in self.walls and pushed_box not in self.boxes
+
+    def is_completed(self, node):
+        for box in node.boxes:
+            if box not in self.goals:
+                return False
+
+        return True
+
         
 
-    def append_move(moves, direction, player, boxes): 
-        if(player in boxes): #box next to player
-            if(can_push_box(player)): 
-                #hay una box con las mismas coordenadas del player_left --> a esa le tengo que restar x y dejar y igual porque la estoy moviendo a la izq
-                moves.append(Node(player, self.get_new_boxes(boxes, player, direction))) #and player can push it
-                #else move is not possible
-            else: #there is no wall and no box
-                moves.append(Node(player, boxes))
+    # def append_move(moves, direction, player, boxes): 
+    #     if(player in boxes): #box next to player
+    #         if(can_push_box(player)): 
+    #             #hay una box con las mismas coordenadas del player_left --> a esa le tengo que restar x y dejar y igual porque la estoy moviendo a la izq
+    #             moves.append(Node(player, self.get_new_boxes(boxes, player, direction))) #and player can push it
+    #             #else move is not possible
+    #         else: #there is no wall and no box
+    #             moves.append(Node(player, boxes))
 
 
 Board('map.txt')
