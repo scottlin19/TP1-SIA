@@ -1,7 +1,7 @@
 import arcade
 import math
 import os
-
+import time
 
 brick_filedir = "images/brick.png"
 box_filedir = "images/box.png"
@@ -60,6 +60,7 @@ class MyGame(arcade.Window):
         self.box_list.draw()
         self.goal_list.draw()
         self.player_list.draw()
+        arcade.finish_render()
 
     def update(self, delta_time):
         """ All the logic to move, and the game logic goes here. """
@@ -74,7 +75,7 @@ def render(min, max, walls, boxes, goals, player, steps):
 
     game = MyGame(SCREEN_WIDTH, SCREEN_HEIGHT)
     game.setup(walls, boxes, goals, player)
-
+    
     count = 0
     img_file = "./solutions/%s.png"
 
@@ -82,26 +83,54 @@ def render(min, max, walls, boxes, goals, player, steps):
         os.makedirs('solutions')
 
     game.on_draw()
-    img = arcade.get_image()
-    img.save(img_file % count, 'PNG')
+    # img = arcade.get_image()
+    # img.save(img_file % count, 'PNG')
 
-    player_asset = game.player_list[0]
+    # player_asset = game.player_list[0]
 
     for step in steps:
-        if(step == 'l'):
-            player_asset.center_x -= player_asset.width
-        elif(step == 'r'):
-            player_asset.center_x += player_asset.width
-        elif(step == 'u'):
-            player_asset.center_y += player_asset.height
-        else:
-            player_asset.center_y -= player_asset.height
+        move_player(game,step,player,boxes)
+        # if(step == 'l'):
+        #     player_asset.center_x -= player_asset.width
+        # elif(step == 'r'):
+        #     player_asset.center_x += player_asset.width
+        # elif(step == 'u'):
+        #     player_asset.center_y += player_asset.height
+        # else:
+        #     player_asset.center_y -= player_asset.height
         count += 1
+        time.sleep(2)
         game.on_draw()
-        img = arcade.get_image()
-        img.save(img_file % count, 'PNG')
+        # img = arcade.get_image()
+        # img.save(img_file % count, 'PNG')
+    # time.sleep(15)
+    arcade.run()
 
-    # arcade.run()
+def move_player(game,step,player,boxes):
+    player_asset = game.player_list[0]
+    if(step == 'l'):
+        player[0] -= 1
+        player_asset.center_x -= player_asset.width
+    elif(step == 'r'):
+        player[0] += 1
+        player_asset.center_x += player_asset.width
+    elif(step == 'u'):
+        player[1] += 1
+        player_asset.center_y += player_asset.height
+    else:
+        player[1] -= 1
+        player_asset.center_y -= player_asset.height
+    # boxes_assets = game.box_list
+    boxes_collision_list = arcade.check_for_collision_with_list(player_asset,game.box_list)
+    for box_asset in boxes_collision_list:
+        if(step == 'l'):
+            box_asset.center_x -= box_asset.width
+        elif(step == 'r'):
+            box_asset.center_x += box_asset.width
+        elif(step == 'u'):
+            box_asset.center_y += box_asset.height
+        else:
+            box_asset.center_y -= box_asset.height
 
 
 # if __name__ == "__main__":

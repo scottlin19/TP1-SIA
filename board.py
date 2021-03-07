@@ -1,7 +1,7 @@
 #Logica del juego. Tiene todas las posiciones 
 from node import Node
 from sokoban_render import render
-from bfs import bfs
+
 
 LEFT = 'l'
 RIGHT = 'r'
@@ -23,7 +23,6 @@ class Board:
         # for m in moves:
         #     print(m)
 
-        bfs(self)
 
 
     def fill_board(self, file):
@@ -130,6 +129,6 @@ class Board:
     #             moves.append(Node(player, boxes))
 
 
-Board('map.txt')
+# Board('map.txt')
 
     
