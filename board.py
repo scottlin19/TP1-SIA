@@ -138,18 +138,4 @@ class Board:
 
         return True
 
-        
-
-    # def append_move(moves, direction, player, boxes): 
-    #     if(player in boxes): #box next to player
-    #         if(can_push_box(player)): 
-    #             #hay una box con las mismas coordenadas del player_left --> a esa le tengo que restar x y dejar y igual porque la estoy moviendo a la izq
-    #             moves.append(Node(player, self.get_new_boxes(boxes, player, direction))) #and player can push it
-    #             #else move is not possible
-    #         else: #there is no wall and no box
-    #             moves.append(Node(player, boxes))
-
-
-# Board('map.txt')
-
     

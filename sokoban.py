@@ -4,6 +4,7 @@ from algorithms.bfs import BFS
 from time import perf_counter 
 from sokoban_render import render
 
+from algorithms.dfs import DFS 
 #Aca parseamos el file de entrada y vamos llamando a cada algoritmo de busqueda
 
 with open("config.json") as f:
@@ -33,3 +34,8 @@ else:
     render(results.board.min_and_max[0], results.board.min_and_max[1], results.board.walls, results.board.boxes, results.board.goals, results.board.player, steps[::-1])
     
     
+    #bfs = BFS()
+    #bfs.search(board)
+    
+    # dfs = DFS()
+    # dfs.search(board)
