@@ -66,7 +66,9 @@ class Board:
             # aux = node.steps.copy()
             # aux.append(direction)
             if(new_position in node.boxes): #box next to player
-                if(self.can_push_box(node.boxes, new_position, direction)): 
+                boxes_copy = node.boxes.copy()
+                boxes_copy.remove(new_position)
+                if(self.can_push_box(boxes_copy, new_position, direction)): 
                     #hay una box con las mismas coordenadas del player_left --> a esa le tengo que restar x y dejar y igual porque la estoy moviendo a la izq
                     moves.append(Node(new_position, self.get_new_boxes(node.boxes, new_position, direction), node,direction)) #and player can push it
                 #else move is not possible

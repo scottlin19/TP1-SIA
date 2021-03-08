@@ -13,7 +13,7 @@ algorithm_list = ['BFS','DFS','IDDFS']
 if config.get('algorithm') == None or (config.get('algorithm') not in algorithm_list):
     print("ERROR: No algorithm provided or algorithm not supported. Config must contain an algorithm from the following list: [\"BFS\",\"DFS\",\"IDDFS\"]")
 else:
-    board = Board('maps/map.txt')
+    board = Board('maps/soko1.txt')
     
     bfs = BFS()
     t1_start = perf_counter()  
