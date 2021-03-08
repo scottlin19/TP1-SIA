@@ -2,13 +2,14 @@
 
 class Node:
 
-    def __init__(self, player, boxes, steps):
+    def __init__(self, player, boxes, prev, direction):
+        self.prev = prev
         self.player = player
         self.boxes = boxes
-        self.steps = steps
+        self.direction = direction
 
     def __str__(self):
-        return "player(%s) - boxes(%s)"%(self.player, self.boxes)
+        return "player(%s) - boxes(%s) - direction(%s)"%(self.player, self.boxes,self.direction)
 
     def __repr__(self):
         return self.__str__()

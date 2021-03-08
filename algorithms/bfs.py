@@ -5,32 +5,35 @@
 #Cuando ya tengo los descendientes del nodo, tengo que iterar por cada uno y buscar sus descendientes (breadth first)
 
 from node import Node
-from sokoban_render import render
 from algorithms.searchMethod import SearchMethod
-tree = {} # hash donde la clave es: 'posición del player + posiciones de las cajas' y el valor es lista de nodos
+from searchResults import SearchResults
+# tree = {} # hash donde la clave es: 'posición del player + posiciones de las cajas' y el valor es lista de nodos
 
 
 class BFS(SearchMethod):
-    
+    # Preguntar si depende de que nodos expandimos primero    
     def search(self,board):
-        node = Node(board.player, board.boxes, [])
+        node = Node(board.player, board.boxes, None, None)
         self.queue.append(node)          #save initial node
         self.visited.append(node)        #save already visited nodes      
         while self.queue:
+            
             curr = self.queue.pop(0)
             if(board.is_completed(curr)):
+                print('finished with: ' + str(self.nodes_expanded))
                 # tree[curr] = None
-                print(curr.steps)
-                print(self.nodes_expanded)
-                render(board.min_and_max[0], board.min_and_max[1], board.walls, board.boxes, board.goals, board.player, curr.steps)
-                return
-
+                # print(curr.steps)
+                return SearchResults(board,self.nodes_expanded,curr)
+            # print(self.nodes_expanded)
+            self.nodes_expanded +=1 
             moves = board.get_possible_moves(curr)
+            # print(moves)
             # tree[curr] = moves
             self.visited.append(curr)
-            self.nodes_expanded +=1 
+            
             for move in moves:
                 if move not in self.visited:
                     self.visited.append(move)
                     self.queue.append(move)
+        # FINISHED WITH NO SOLUTION
 
