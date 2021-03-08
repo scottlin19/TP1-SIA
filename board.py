@@ -33,25 +33,25 @@ class Board:
             x = 0
             for char in line:
                 if(char == "#"):
-                    self.walls.append([x,y])
+                    self.walls.append((x,y))
                 elif char == "^":
-                    self.player = [x,y]
+                    self.player = (x,y)
                 elif char == "o":
-                    self.goals.append([x,y])
+                    self.goals.append((x,y))
                 elif char == "x":
-                    self.boxes.append([x,y])
+                    self.boxes.append((x,y))
                 x += 1
             y += 1
-        return [0,0], [x, y-1]
+        return (0,0), (x, y-1)
 
     def get_possible_moves(self, node):
         moves = [] #moves is an array of Nodes
 
         #calculate all moves 
-        player_left = [node.player[0] - 1, node.player[1]]
-        player_right = [node.player[0] + 1, node.player[1]]
-        player_up = [node.player[0], node.player[1] + 1]
-        player_down = [node.player[0], node.player[1] - 1]
+        player_left = (node.player[0] - 1, node.player[1])
+        player_right = (node.player[0] + 1, node.player[1])
+        player_up = (node.player[0], node.player[1] + 1)
+        player_down = (node.player[0], node.player[1] - 1)
 
         self.check_move(moves, node, player_left, LEFT)
         self.check_move(moves, node, player_right, RIGHT)
@@ -66,7 +66,7 @@ class Board:
             aux = node.steps.copy()
             aux.append(direction)
             if(new_position in node.boxes): #box next to player
-                if(self.can_push_box(new_position, direction)): 
+                if(self.can_push_box(node.boxes, new_position, direction)): 
                     #hay una box con las mismas coordenadas del player_left --> a esa le tengo que restar x y dejar y igual porque la estoy moviendo a la izq
                     moves.append(Node(new_position, self.get_new_boxes(node.boxes, new_position, direction), aux)) #and player can push it
                 #else move is not possible
@@ -75,40 +75,42 @@ class Board:
 
 
     def get_new_boxes(self, boxes, player, direction):
-        new_boxes = boxes.copy()
-        
-        for b in new_boxes: 
-            aux = list(b)
-            
+        new_boxes = []
+
+        for b in boxes: 
+
             if(b == player):
-                new_boxes.remove(b)
-                 
+                aux = list(b)
+                
                 if(direction == LEFT):
                     aux[0] = player[0] - 1
                 elif(direction == RIGHT):
                     aux[0] = player[0] + 1
-                elif(direction == UP):  
+                elif(direction == UP):
                     aux[1] = player[1] + 1 
                 elif(direction == DOWN):
-                    aux[1] = player[1] - 1    
-                     
-            b = aux
-            new_boxes.append(b) 
-               
+                    aux[1] = player[1] - 1
+                
+                b = tuple(aux)
+
+            new_boxes.append(b)
+
+
+
         return new_boxes
     
-    def can_push_box(self, moved_player, direction):
+    def can_push_box(self, boxes, moved_player, direction):
         
         if(direction == LEFT):
-            pushed_box = [moved_player[0] -1, moved_player[1]]
+            pushed_box = (moved_player[0] -1, moved_player[1])
         elif(direction == RIGHT):
-            pushed_box = [moved_player[0] + 1, moved_player[1]]
+            pushed_box = (moved_player[0] + 1, moved_player[1])
         elif(direction == UP):
-            pushed_box = [moved_player[0], moved_player[1] + 1]
+            pushed_box = (moved_player[0], moved_player[1] + 1)
         else:  
-            pushed_box = [moved_player[0], moved_player[1] - 1]
+            pushed_box = (moved_player[0], moved_player[1] - 1)
             
-        return pushed_box not in self.walls and pushed_box not in self.boxes
+        return pushed_box not in self.walls and pushed_box not in boxes
 
     def is_completed(self, node):
         for box in node.boxes:

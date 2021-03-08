@@ -41,7 +41,7 @@ class MyGame(arcade.Window):
 
         for i in range(max_asset_x):
             for j in range(max_asset_y):
-                if([i, j] in positions):
+                if((i, j) in positions):
                     asset.center_x = x
                     asset.center_y = y
                     sprite_list.append(asset)
@@ -89,36 +89,22 @@ def render(min, max, walls, boxes, goals, player, steps):
     # player_asset = game.player_list[0]
 
     for step in steps:
-        move_player(game,step,player,boxes)
-        # if(step == 'l'):
-        #     player_asset.center_x -= player_asset.width
-        # elif(step == 'r'):
-        #     player_asset.center_x += player_asset.width
-        # elif(step == 'u'):
-        #     player_asset.center_y += player_asset.height
-        # else:
-        #     player_asset.center_y -= player_asset.height
+        move_player(game,step)
         count += 1
-        time.sleep(2)
+        time.sleep(0.25)
         game.on_draw()
-        # img = arcade.get_image()
-        # img.save(img_file % count, 'PNG')
-    # time.sleep(15)
+
     arcade.run()
 
-def move_player(game,step,player,boxes):
+def move_player(game, step):
     player_asset = game.player_list[0]
     if(step == 'l'):
-        player[0] -= 1
         player_asset.center_x -= player_asset.width
     elif(step == 'r'):
-        player[0] += 1
         player_asset.center_x += player_asset.width
     elif(step == 'u'):
-        player[1] += 1
         player_asset.center_y += player_asset.height
     else:
-        player[1] -= 1
         player_asset.center_y -= player_asset.height
     # boxes_assets = game.box_list
     boxes_collision_list = arcade.check_for_collision_with_list(player_asset,game.box_list)
