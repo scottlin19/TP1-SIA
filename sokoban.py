@@ -9,7 +9,7 @@ algorithm_list = ['BFS','DFS','IDDFS']
 if config.get('algorithm') == None or (config.get('algorithm') not in algorithm_list):
     print("ERROR: No algorithm provided or algorithm not supported. Config must contain an algorithm from the following list: [\"BFS\",\"DFS\",\"IDDFS\"]")
 else:
-    board = Board('map.txt')
+    board = Board('maps/medium.txt')
     
     bfs = BFS()
     bfs.search(board)

@@ -109,8 +109,27 @@ class Board:
             pushed_box = (moved_player[0], moved_player[1] + 1)
         else:  
             pushed_box = (moved_player[0], moved_player[1] - 1)
+
+        if(pushed_box not in self.walls and pushed_box not in boxes):
+
+            if(pushed_box in self.goals):
+                return True
+
+            aux_left = (pushed_box[0]-1, pushed_box[1])
+            aux_right = (pushed_box[0]+1, pushed_box[1])
+            aux_up = (pushed_box[0], pushed_box[1]+1)
+            aux_down = (pushed_box[0], pushed_box[1]-1)
+
+            if(aux_up in self.walls or aux_up in boxes or aux_down in self.walls or aux_down in boxes):
+                if(aux_left in self.walls or aux_left in boxes or aux_right in self.walls or aux_right in boxes):
+                    return False
+
+            return True
+
+        else:
+            return False
             
-        return pushed_box not in self.walls and pushed_box not in boxes
+        # return pushed_box not in self.walls and pushed_box not in boxes
 
     def is_completed(self, node):
         for box in node.boxes:

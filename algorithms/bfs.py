@@ -7,7 +7,7 @@
 from node import Node
 from sokoban_render import render
 from algorithms.searchMethod import SearchMethod
-# tree = {} # hash donde la clave es: 'posición del player + posiciones de las cajas' y el valor es lista de nodos
+tree = {} # hash donde la clave es: 'posición del player + posiciones de las cajas' y el valor es lista de nodos
 
 
 class BFS(SearchMethod):
@@ -21,6 +21,7 @@ class BFS(SearchMethod):
             if(board.is_completed(curr)):
                 # tree[curr] = None
                 print(curr.steps)
+                print(self.nodes_expanded)
                 render(board.min_and_max[0], board.min_and_max[1], board.walls, board.boxes, board.goals, board.player, curr.steps)
                 return
 
