@@ -10,7 +10,7 @@ class DFS(SearchMethod):
     
     def search(self,board):
         node = Node(board.player, board.boxes, None, None)
-        metrics = Metrics('dfs',false,0,0,0,0)
+        metrics = Metrics('dfs',False,0,0,0,0)
         stack = []
         visited = set()
         stack.append(node)          #save initial node in stack
@@ -19,9 +19,8 @@ class DFS(SearchMethod):
         while stack:  
             curr = stack.pop() #it is a stack 
             if(board.is_completed(curr)):
-                # print(curr.steps) 
+                
                 print('finished with: ' + str(metrics.nodes_expanded))
-                # render(board.min_and_max[0], board.min_and_max[1], board.walls, board.boxes, board.goals, board.player, curr.steps)
                 return SearchResults(metrics,curr)
              
             moves = board.get_possible_moves(curr)
@@ -30,6 +29,10 @@ class DFS(SearchMethod):
                 if move not in self.visited: 
                     stack.append(move)
                     visited.add(move)
+                    
+        # Stack is empty so there is no solution 
+        metrics.success = False
+        return SearchResults(metrics,None)
                     
             
     """ def search(self, board): 
