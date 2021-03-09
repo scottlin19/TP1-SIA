@@ -70,8 +70,11 @@ class MyGame(arcade.Window):
 def render(min, max, walls, boxes, goals, player, steps):
     brick = arcade.Sprite(brick_filedir, SPRITE_SCALING)
 
-    SCREEN_WIDTH = (max[0]-min[0]+1)*math.ceil(brick.width)
-    SCREEN_HEIGHT = (max[1]-min[1]+1)*math.ceil(brick.height)
+    # SCREEN_WIDTH = (max[0]-min[0]+1)*math.ceil(brick.width)
+    # SCREEN_HEIGHT = (max[1]-min[1]+1)*math.ceil(brick.height)
+
+    SCREEN_WIDTH = 800
+    SCREEN_HEIGHT = 600
 
     game = MyGame(SCREEN_WIDTH, SCREEN_HEIGHT)
     game.setup(walls, boxes, goals, player)
