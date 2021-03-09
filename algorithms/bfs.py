@@ -14,28 +14,34 @@ from searchResults import SearchResults
 class BFS(SearchMethod):
     # Preguntar si depende de que nodos expandimos primero    
     def search(self,board):
+        visited = set()
+        queue = []
         node = Node(board.player, board.boxes, None, None)
         metrics = Metrics('bfs',false,0,0,0,0)
-        self.queue.append(node)          #save initial node
-        # self.visited.append(node)        #save already visited nodes      
-        while self.queue:
+        queue.append(node)          #save initial node
+        visited.add(node) #save already visited nodes      
+        
+        while queue:
             
-            curr = self.queue.pop(0)
+            curr = queue.pop(0)
             if(board.is_completed(curr)):
-                print('finished with: ' + str(self.nodes_expanded))
-                # tree[curr] = None
-                # print(curr.steps)
-                return SearchResults(board,self.nodes_expanded,curr)
-            # print(self.nodes_expanded)
-            self.nodes_expanded +=1 
-            moves = board.get_possible_moves(curr)
-            # print(moves)
-            # tree[curr] = moves
-            self.visited.add(curr)
+                metrics.success = true 
+                metrics.frontier = len(queue)
+                print('finished with: ' + str(metrics.nodes_expanded))
+           
+                return SearchResults(metrics,curr)
+          
+            moves = board.get_possible_moves(curr) #get a tree level
+            if(moves) #curr has children
+                metrics.nodes_expanded += 1
             
             for move in moves:
-                if move not in self.visited:
-                    self.visited.add(move)
-                    self.queue.append(move)
-        # FINISHED WITH NO SOLUTION
+                if move not in visited:
+                   
+                    visited.add(move)
+                    queue.append(move)
+                    
+        # Queue is empty so there is no solution 
+        metrics.success = false
+        return SearchResults(metrics,None)
 

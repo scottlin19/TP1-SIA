@@ -1,5 +1,4 @@
 class SearchResults:
-    def __init__(self,board,nodes_expanded,final_node):
-        self.board = board
-        self.nodes_expanded = nodes_expanded
+    def __init__(self, metrics,final_node):
+        self.metrics = metrics
         self.final_node = final_node

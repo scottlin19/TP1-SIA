@@ -7,3 +7,4 @@ class Metrics:
         self.cost =  cost
         self.nodes_expanded = nodes_expanded
         self.frontier = frontier
+    
