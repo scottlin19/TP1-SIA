@@ -15,7 +15,7 @@ class BFS(SearchMethod):
     def search(self,board):
         node = Node(board.player, board.boxes, None, None)
         self.queue.append(node)          #save initial node
-        self.visited.append(node)        #save already visited nodes      
+        self.visited.add(node)        #save already visited nodes      
         while self.queue:
             
             curr = self.queue.pop(0)
@@ -29,11 +29,11 @@ class BFS(SearchMethod):
             moves = board.get_possible_moves(curr)
             # print(moves)
             # tree[curr] = moves
-            self.visited.append(curr)
+            self.visited.add(curr)
             
             for move in moves:
                 if move not in self.visited:
-                    self.visited.append(move)
+                    self.visited.add(move)
                     self.queue.append(move)
         # FINISHED WITH NO SOLUTION
 

@@ -18,4 +18,4 @@ class Node:
         return (isinstance(other, self.__class__) and other.player == self.player and other.boxes == self.boxes)
 
     def __hash__(self):
-        return hash(self.__str__())
+        return hash((self.player,tuple(self.boxes)))
