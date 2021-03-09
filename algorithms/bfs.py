@@ -15,7 +15,7 @@ class BFS(SearchMethod):
     def search(self,board):
         node = Node(board.player, board.boxes, None, None)
         self.queue.append(node)          #save initial node
-        self.visited.append(node)        #save already visited nodes      
+        # self.visited.append(node)        #save already visited nodes      
         while self.queue:
             
             curr = self.queue.pop(0)

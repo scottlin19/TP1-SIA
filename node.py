@@ -14,8 +14,22 @@ class Node:
     def __repr__(self):
         return self.__str__()
 
+    # def __eq__(self, other):
+    #     return (isinstance(other, self.__class__) and other.player == self.player and other.boxes == self.boxes)
+
+    # def __hash__(self):
+    #     return hash(self.__str__())
+
     def __eq__(self, other):
-        return (isinstance(other, self.__class__) and other.player == self.player and other.boxes == self.boxes)
+        if((isinstance(other, self.__class__) and other.player == self.player)):
+            for box in other.boxes:
+                if box not in self.boxes:
+                    return False
+            return True
+        return False
 
     def __hash__(self):
-        return hash(self.__str__())
+        ret = hash(self.player)
+        for box in self.boxes:
+            ret += hash(box)
+        return ret
