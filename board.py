@@ -41,6 +41,13 @@ class Board:
                     self.goals.append((x,y))
                 elif char == "x":
                     self.boxes.add((x,y))
+                elif char == "%":
+                    self.boxes.add((x,y))
+                    self.goals.append((x,y))
+                elif char == "$":
+                    self.player = (x,y)
+                    self.goals.append((x,y))
+
                 x += 1
                 if(x > max_x):
                     max_x = x
