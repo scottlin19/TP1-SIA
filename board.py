@@ -16,7 +16,7 @@ class Board:
         self.boxes = set()
         self.goals = []
         self.player = None
-        self.min_and_max = self.fill_board(file)
+        self.max_point = self.fill_board(file)
         # print(min_and_max)
 
         # moves= self.get_possible_moves(Node(self.player, self.boxes))
@@ -29,6 +29,7 @@ class Board:
         lines = [line.strip("\n") for line in file if line != "\n"]
         x = 0
         y = 0
+        max_x = 0
         for line in reversed(lines): # el reversed es para que despues no se renderee al reves el mapa
             x = 0
             for char in line:
@@ -41,8 +42,10 @@ class Board:
                 elif char == "x":
                     self.boxes.add((x,y))
                 x += 1
+                if(x > max_x):
+                    max_x = x
             y += 1
-        return (0,0), (x, y-1)
+        return (max_x-1, y-1)
 
     def get_possible_moves(self, node):
         moves = [] #moves is an array of Nodes
