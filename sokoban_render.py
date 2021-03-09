@@ -31,8 +31,6 @@ class MyGame(arcade.Window):
         self.boardPopulator(goal_filedir, self.goal_list, goals)
         self.boardPopulator(player_filedir, self.player_list, [player])
 
-        self.player_list[0].collision_radius = self.player_list[0].width/2 
-
     def boardPopulator(self, filedir, sprite_list, positions):
         asset = arcade.Sprite(filedir, SPRITE_SCALING)
         x = asset.width/2

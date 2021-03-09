@@ -10,20 +10,22 @@ from algorithms.dfs import DFS
 with open("config.json") as f:
     config = json.load(f)
 algorithm_list = ['BFS','DFS','IDDFS']
-config_algoritm = config.get('algorithm')
-
-if config_algoritm == None or (config_algoritm not in algorithm_list):
+config_algorithm = config.get('algorithm')
+algorithm = None
+if config_algorithm == None or (config_algorithm not in algorithm_list):
     print("ERROR: No algorithm provided or algorithm not supported. Config must contain an algorithm from the following list: " + str(algorithm_list))
-elif config_algoritm == 'BFS':
+elif config_algorithm == 'BFS':
     print("BFS")
-    algoritm = BFS()
-elif config_algoritm == 'DFS':
-    algoritm = DFS()
+    algorithm = BFS()
+elif config_algorithm == 'DFS':
+    algorithm = DFS()
+elif config_algorithm == 'IDDFS':
+    algorithm = None
     
-board = Board('maps/soko1.txt')
+board = Board('maps/soko3.txt')
 
 t1_start = perf_counter()
-results = algoritm.search(board)
+results = algorithm.search(board)
 # Stop the stopwatch / counter 
 t1_stop = perf_counter()         
 print("Elapsed time:", t1_stop, t1_start)
