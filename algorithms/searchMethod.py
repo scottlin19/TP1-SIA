@@ -3,7 +3,7 @@ class SearchMethod(ABC):
     
     def __init__(self):
         self.nodes_expanded = 0
-        self.visited = []
+        self.visited = set()
         self.queue = []
         super().__init__()
 

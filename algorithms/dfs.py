@@ -11,7 +11,7 @@ class DFS(SearchMethod):
     def search(self,board):
         node = Node(board.player, board.boxes, None, None)
         self.queue.append(node)          #save initial node in stack
-        self.visited.append(node)
+        self.visited.add(node)
         
         while self.queue:  
             curr = self.queue.pop() #it is a stack 
@@ -26,7 +26,7 @@ class DFS(SearchMethod):
             for move in moves:
                 if move not in self.visited: 
                     self.queue.append(move)
-                    self.visited.append(move)
+                    self.visited.add(move)
                     
             
     """ def search(self, board): 
