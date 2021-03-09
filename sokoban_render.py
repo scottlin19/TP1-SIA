@@ -31,6 +31,8 @@ class MyGame(arcade.Window):
         self.boardPopulator(goal_filedir, self.goal_list, goals)
         self.boardPopulator(player_filedir, self.player_list, [player])
 
+        self.player_list[0].collision_radius = self.player_list[0].width/2 
+
     def boardPopulator(self, filedir, sprite_list, positions):
         asset = arcade.Sprite(filedir, SPRITE_SCALING)
         x = asset.width/2
@@ -94,7 +96,7 @@ def render(min, max, walls, boxes, goals, player, steps):
     for step in steps:
         move_player(game,step)
         count += 1
-        time.sleep(0.25)
+        time.sleep(0.40)
         game.on_draw()
 
     arcade.run()
@@ -109,17 +111,29 @@ def move_player(game, step):
         player_asset.center_y += player_asset.height
     else:
         player_asset.center_y -= player_asset.height
-    # boxes_assets = game.box_list
-    boxes_collision_list = arcade.check_for_collision_with_list(player_asset,game.box_list)
-    for box_asset in boxes_collision_list:
+
+    closest_box = arcade.get_closest_sprite(player_asset, game.box_list)
+
+    if(closest_box[1] < 0.1):
         if(step == 'l'):
-            box_asset.center_x -= box_asset.width
+            closest_box[0].center_x -= closest_box[0].width
         elif(step == 'r'):
-            box_asset.center_x += box_asset.width
+            closest_box[0].center_x += closest_box[0].width
         elif(step == 'u'):
-            box_asset.center_y += box_asset.height
+            closest_box[0].center_y += closest_box[0].height
         else:
-            box_asset.center_y -= box_asset.height
+            closest_box[0].center_y -= closest_box[0].height
+
+    # boxes_collision_list = arcade.check_for_collision_with_list(player_asset,game.box_list)
+    # for box_asset in boxes_collision_list:
+    #     if(step == 'l'):
+    #         box_asset.center_x -= box_asset.width
+    #     elif(step == 'r'):
+    #         box_asset.center_x += box_asset.width
+    #     elif(step == 'u'):
+    #         box_asset.center_y += box_asset.height
+    #     else:
+    #         box_asset.center_y -= box_asset.height
 
 
 # if __name__ == "__main__":
