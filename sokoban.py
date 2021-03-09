@@ -40,11 +40,12 @@ while node != None and node.prev != None:
     node = node.prev
 print(steps[::-1])
 print(len(steps))
-print("depth: " + depth)
+print("depth: %d" %depth)
 print("params: " + results.metrics.params)
-print("success " + results.metrics.success)
-print("nodes expanded " + results.metrics.nodes_expanded)
-print("nodes in frontier " + results.metrics.frontier)
-print("cost " + results.metrics.cost)
+
+print("success %r" %results.metrics.success)
+print("nodes expanded %d" %results.metrics.nodes_expanded)
+print("nodes in frontier %d" %results.metrics.frontier)
+print("cost %d " %results.metrics.cost)
 render(board.min_and_max[0], board.min_and_max[1], board.walls, results.final_node.boxes, board.goals, results.final_node.player, steps[::-1])
 

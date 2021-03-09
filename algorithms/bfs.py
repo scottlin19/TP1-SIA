@@ -17,22 +17,22 @@ class BFS(SearchMethod):
         visited = set()
         queue = []
         node = Node(board.player, board.boxes, None, None)
-        metrics = Metrics('bfs',false,0,0,0,0)
+        metrics = Metrics('bfs',False,0,0,0,0)
         queue.append(node)          #save initial node
-        visited.add(node) #save already visited nodes      
+        visited.add(node)           #save already visited nodes      
         
         while queue:
             
             curr = queue.pop(0)
             if(board.is_completed(curr)):
-                metrics.success = true 
+                metrics.success = True 
                 metrics.frontier = len(queue)
                 print('finished with: ' + str(metrics.nodes_expanded))
            
                 return SearchResults(metrics,curr)
           
             moves = board.get_possible_moves(curr) #get a tree level
-            if(moves) #curr has children
+            if(moves): #curr has children
                 metrics.nodes_expanded += 1
             
             for move in moves:
@@ -42,6 +42,6 @@ class BFS(SearchMethod):
                     queue.append(move)
                     
         # Queue is empty so there is no solution 
-        metrics.success = false
+        metrics.success = False
         return SearchResults(metrics,None)
 
