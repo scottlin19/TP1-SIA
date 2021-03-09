@@ -18,7 +18,7 @@ elif config_algoritm == 'BFS':
     algoritm = BFS()
 elif config_algoritm == 'DFS':
     algoritm = DFS()
-board = Board('maps/map.txt')
+board = Board('maps/medium.txt')
 t1_start = perf_counter()
 results = algoritm.search(board)
 # Stop the stopwatch / counter 
