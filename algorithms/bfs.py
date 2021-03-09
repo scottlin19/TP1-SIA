@@ -5,6 +5,7 @@
 #Cuando ya tengo los descendientes del nodo, tengo que iterar por cada uno y buscar sus descendientes (breadth first)
 
 from node import Node
+from metrics import Metrics
 from algorithms.searchMethod import SearchMethod
 from searchResults import SearchResults
 # tree = {} # hash donde la clave es: 'posición del player + posiciones de las cajas' y el valor es lista de nodos
@@ -14,6 +15,7 @@ class BFS(SearchMethod):
     # Preguntar si depende de que nodos expandimos primero    
     def search(self,board):
         node = Node(board.player, board.boxes, None, None)
+        metrics = Metrics('bfs',false,0,0,0,0)
         self.queue.append(node)          #save initial node
         # self.visited.append(node)        #save already visited nodes      
         while self.queue:

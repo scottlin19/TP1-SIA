@@ -21,15 +21,7 @@ class Node:
     #     return hash(self.__str__())
 
     def __eq__(self, other):
-        if((isinstance(other, self.__class__) and other.player == self.player)):
-            for box in other.boxes:
-                if box not in self.boxes:
-                    return False
-            return True
-        return False
+        return (isinstance(other, self.__class__) and other.player == self.player and other.boxes == self.boxes)
 
     def __hash__(self):
-        ret = hash(self.player)
-        for box in self.boxes:
-            ret += hash(box)
-        return ret
+        return hash((self.player,frozenset(self.boxes)))

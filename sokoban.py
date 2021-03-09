@@ -33,6 +33,6 @@ while node.prev != None:
     steps.append(node.direction)
     node = node.prev
 print(steps[::-1])
-
+print(len(steps))
 render(results.board.min_and_max[0], results.board.min_and_max[1], results.board.walls, results.board.boxes, results.board.goals, results.board.player, steps[::-1])
 

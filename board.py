@@ -13,7 +13,7 @@ class Board:
     def __init__(self, filename):
         file = open(filename, "r")
         self.walls = []
-        self.boxes = []
+        self.boxes = set()
         self.goals = []
         self.player = None
         self.min_and_max = self.fill_board(file)
@@ -39,7 +39,7 @@ class Board:
                 elif char == "o":
                     self.goals.append((x,y))
                 elif char == "x":
-                    self.boxes.append((x,y))
+                    self.boxes.add((x,y))
                 x += 1
             y += 1
         return (0,0), (x, y-1)
@@ -77,7 +77,7 @@ class Board:
 
 
     def get_new_boxes(self, boxes, player, direction):
-        new_boxes = []
+        new_boxes = set()
 
         for b in boxes: 
 
@@ -95,7 +95,7 @@ class Board:
                 
                 b = tuple(aux)
 
-            new_boxes.append(b)
+            new_boxes.add(b)
 
 
 
