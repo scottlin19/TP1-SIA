@@ -21,9 +21,9 @@ elif config_algorithm == 'BFS':
 elif config_algorithm == 'DFS':
     algorithm = DFS()
 elif config_algorithm == 'IDDFS':
-    algorithm = IDDFS(1000)
+    algorithm = IDDFS(2)
     
-board = Board('maps/easy.txt')
+board = Board('maps/map.txt')
 
 t1_start = perf_counter()
 results = algorithm.search(board)
