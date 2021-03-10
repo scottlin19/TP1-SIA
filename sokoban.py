@@ -3,6 +3,7 @@ import json
 from algorithms.bfs import BFS  
 from time import perf_counter 
 from sokoban_render import render
+from algorithms.iddfs import IDDFS  
 
 from algorithms.dfs import DFS 
 #Aca parseamos el file de entrada y vamos llamando a cada algoritmo de busqueda
@@ -20,9 +21,9 @@ elif config_algorithm == 'BFS':
 elif config_algorithm == 'DFS':
     algorithm = DFS()
 elif config_algorithm == 'IDDFS':
-    algorithm = IDDFS(10)
+    algorithm = IDDFS(1000)
     
-board = Board('maps/test.txt')
+board = Board('maps/easy.txt')
 
 t1_start = perf_counter()
 results = algorithm.search(board)

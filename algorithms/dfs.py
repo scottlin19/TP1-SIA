@@ -19,7 +19,8 @@ class DFS(SearchMethod):
         while stack:  
             curr = stack.pop() #it is a stack 
             if(board.is_completed(curr)):
-                
+                metrics.success = True
+                metrics.frontier = len(stack)
                 print('finished with: ' + str(metrics.nodes_expanded))
                 return SearchResults(metrics,curr)
              
