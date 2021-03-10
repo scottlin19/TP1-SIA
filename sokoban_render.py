@@ -9,6 +9,7 @@ goal_filedir = "images/goal.png"
 player_filedir = "images/player.png"
 
 SPRITE_SCALING = 0.15
+METRICS_WIDTH = 400
 
 
 class MyGame(arcade.Window):
@@ -19,7 +20,7 @@ class MyGame(arcade.Window):
 
         arcade.set_background_color(arcade.color.BEIGE)
 
-    def setup(self, walls, boxes, goals, player):
+    def setup(self, walls, boxes, goals, player, metrics):
         # Set up your game here
         self.brick_list = arcade.SpriteList()
         self.box_list = arcade.SpriteList()
@@ -30,6 +31,8 @@ class MyGame(arcade.Window):
         self.boardPopulator(box_filedir, self.box_list, boxes)
         self.boardPopulator(goal_filedir, self.goal_list, goals)
         self.boardPopulator(player_filedir, self.player_list, [player])
+               
+        self.metrics = metrics
 
     def boardPopulator(self, filedir, sprite_list, positions):
         asset = arcade.Sprite(filedir, SPRITE_SCALING)
@@ -55,11 +58,31 @@ class MyGame(arcade.Window):
     def on_draw(self):
         """ Render the screen. """
         arcade.start_render()
-        # Your drawing code goes here
+        # Draw Board
         self.brick_list.draw()
         self.box_list.draw()
         self.goal_list.draw()
         self.player_list.draw()
+        
+        # Draw metrics
+        start_x = self.width - METRICS_WIDTH/2
+        start_y = self.height/2
+        
+        arcade.draw_rectangle_filled(start_x, start_y, METRICS_WIDTH , self.height, arcade.color.BABY_PINK) 
+        
+        arcade.draw_text("SOKOBAN SOLVER", start_x - 100, start_y + 200, arcade.color.BLACK, 20, anchor_y="top")
+        arcade.draw_text("Search Method: " + self.metrics.params, start_x - 120, start_y + 160, arcade.color.BLACK, 18, anchor_y="top")
+        if(self.metrics.success == False):
+            arcade.draw_text("No Solution", start_x - 90, start_y + 120, arcade.color.BLACK, 16, anchor_y="top")
+        else:
+            arcade.draw_text("Solution Found", start_x - 90, start_y + 120, arcade.color.BLACK, 16, anchor_y="top")
+             
+        arcade.draw_text("Depth: %d" %self.metrics.depth, start_x - 140, start_y + 80, arcade.color.BLACK, 15, anchor_y="top")
+        arcade.draw_text("Nodes Expanded: %d" %self.metrics.nodes_expanded, start_x - 140, start_y + 55, arcade.color.BLACK, 15, anchor_y="top")
+        arcade.draw_text("Nodes in Frontier: %d" %self.metrics.frontier, start_x - 140, start_y + 35, arcade.color.BLACK, 15, anchor_y="top")
+        arcade.draw_text("Cost: %d" %self.metrics.cost, start_x - 140, start_y + 15, arcade.color.BLACK, 15, anchor_y="top")
+        
+        # End
         arcade.finish_render()
 
     def update(self, delta_time):
@@ -67,14 +90,14 @@ class MyGame(arcade.Window):
         pass
 
 
-def render(min, max, walls, boxes, goals, player, steps):
+def render(min, max, walls, boxes, goals, player, steps, metrics):
     brick = arcade.Sprite(brick_filedir, SPRITE_SCALING)
 
-    SCREEN_WIDTH = (max[0]-min[0]+1)*math.ceil(brick.width)
-    SCREEN_HEIGHT = (max[1]-min[1]+1)*math.ceil(brick.height)
+    SCREEN_WIDTH = (max[0]-min[0]+1)*math.ceil(brick.width) + METRICS_WIDTH
+    SCREEN_HEIGHT = (max[1]-min[1]+1)*math.ceil(brick.height) 
 
     game = MyGame(SCREEN_WIDTH, SCREEN_HEIGHT)
-    game.setup(walls, boxes, goals, player)
+    game.setup(walls, boxes, goals, player, metrics)
     
     count = 0
     img_file = "./solutions/%s.png"
@@ -119,17 +142,5 @@ def move_player(game, step):
         else:
             closest_box[0].center_y -= closest_box[0].height
 
-    # boxes_collision_list = arcade.check_for_collision_with_list(player_asset,game.box_list)
-    # for box_asset in boxes_collision_list:
-    #     if(step == 'l'):
-    #         box_asset.center_x -= box_asset.width
-    #     elif(step == 'r'):
-    #         box_asset.center_x += box_asset.width
-    #     elif(step == 'u'):
-    #         box_asset.center_y += box_asset.height
-    #     else:
-    #         box_asset.center_y -= box_asset.height
-
-
-# if __name__ == "__main__":
-#     main()
+ 
+   

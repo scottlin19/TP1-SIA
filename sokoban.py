@@ -40,14 +40,16 @@ while node != None and node.prev != None:
     depth += 1
     steps.append(node.direction)
     node = node.prev
+    
 print(steps[::-1])
 print(len(steps))
 print("depth: %d" %depth)
 print("params: " + results.metrics.params)
-
 print("success %r" %results.metrics.success)
 print("nodes expanded %d" %results.metrics.nodes_expanded)
 print("nodes in frontier %d" %results.metrics.frontier)
 print("cost %d " %results.metrics.cost)
-render((0,0), board.max_point, board.walls, board.boxes, board.goals, board.player, steps[::-1])
+
+results.metrics.depth = depth
+render((0,0), board.max_point, board.walls, board.boxes, board.goals, board.player, steps[::-1], results.metrics)
 

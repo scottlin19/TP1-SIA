@@ -12,7 +12,7 @@ class IDDFS(SearchMethod):
     def search(self,board):
         
         node = Node(board.player, board.boxes, None, None)
-        metrics = Metrics('iddfs',False,0,0,0,0)
+        metrics = Metrics('IDDFS',False,0,0,0,0)
         stack = []
         visited = set()
         stack.append(node)          #save initial node in stack
