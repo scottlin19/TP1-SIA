@@ -12,9 +12,9 @@ class Board:
 
     def __init__(self, filename):
         file = open(filename, "r")
-        self.walls = []
+        self.walls = set()
         self.boxes = set()
-        self.goals = []
+        self.goals = set()
         self.player = None
         self.max_point = self.fill_board(file)
         # print(min_and_max)
@@ -34,19 +34,19 @@ class Board:
             x = 0
             for char in line:
                 if(char == "#"):
-                    self.walls.append((x,y))
+                    self.walls.add((x,y))
                 elif char == "^":
                     self.player = (x,y)
                 elif char == "o":
-                    self.goals.append((x,y))
+                    self.goals.add((x,y))
                 elif char == "x":
                     self.boxes.add((x,y))
                 elif char == "%":
                     self.boxes.add((x,y))
-                    self.goals.append((x,y))
+                    self.goals.add((x,y))
                 elif char == "$":
                     self.player = (x,y)
-                    self.goals.append((x,y))
+                    self.goals.add((x,y))
 
                 x += 1
                 if(x > max_x):
