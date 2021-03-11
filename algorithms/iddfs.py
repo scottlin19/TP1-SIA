@@ -16,6 +16,7 @@ class IDDFS(SearchMethod):
         self.visited = set()
         self.metrics = Metrics('IDDFS',False,0,0,0,0)
         self.queue = []
+        self.solution_found = False
 
 
     def search(self,board):
@@ -52,19 +53,16 @@ class IDDFS(SearchMethod):
 
                 if(aux_len >= queue_len):
                     
-                    if(self.metrics.success): #Search optimal sn: in queue there are nodes of different levels, we gotta see which node is sn and has the mininum level
+                    if(self.solution_found): #Search optimal sn: in queue there are nodes of different levels, we gotta see which node is sn and has the mininum level
                         optimal_solution = None
+                        for node in self.visited:
+                            if(board.is_completed(node)):
+                                print(node)
+                        print('--------------')
                         for node in self.queue:
                             if(board.is_completed(node)):
                                 print(node)
-                                depth = node.depth
-                                aux_node = node.prev
-                                print('depth =', depth)
-                                while depth is not start:
-                                    depth = aux_node.depth
-                                    aux_node = aux_node.prev
-
-                                if(optimal_solution is None or depth <= optimal_solution.depth - start):
+                                if(optimal_solution is None or node.depth < optimal_solution.depth):
                                     optimal_solution = node
                         return optimal_solution
 
@@ -83,7 +81,7 @@ class IDDFS(SearchMethod):
     def iddfs_rec(self, node, start, limit, board):
         
         if(board.is_completed(node)): #sn found, now we gotta see if it is optimal
-            self.metrics.success = True
+            self.solution_found = True
             self.queue.append(node)
             print("Encontro la sn") 
             return node
@@ -103,5 +101,6 @@ class IDDFS(SearchMethod):
                 result = self.iddfs_rec(move, start+1, limit, board)
                 if(result is not None):
                     return result
+                self.visited.remove(move)
             
         return None
