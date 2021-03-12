@@ -21,9 +21,9 @@ elif config_algorithm == 'BFS':
 elif config_algorithm == 'DFS':
     algorithm = DFS()
 elif config_algorithm == 'IDDFS':
-    algorithm = IDDFS(1000)
+    algorithm = IDDFS(2)
     
-board = Board('maps/easy.txt')
+board = Board('maps/no_solution.txt')
 
 t1_start = perf_counter()
 results = algorithm.search(board)
@@ -33,11 +33,10 @@ print("Elapsed time:", t1_stop, t1_start)
 print("Elapsed time during the whole program in ms:", (t1_stop-t1_start)*1000) 
 
 node = results.final_node
+print(node)
 steps = []
 depth = 0
-while node != None and node.prev != None:
-    print(node)
-    print('step: ' + node.direction)
+while node is not None and node.prev is not None:
     depth += 1
     steps.append(node.direction)
     node = node.prev
@@ -50,7 +49,7 @@ print("success %r" %results.metrics.success)
 print("nodes expanded %d" %results.metrics.nodes_expanded)
 print("nodes in frontier %d" %results.metrics.frontier)
 print("cost %d " %results.metrics.cost)
-
+results.metrics.time = (t1_stop-t1_start)*1000
 results.metrics.depth = depth
 render((0,0), board.max_point, board.walls, board.boxes, board.goals, board.player, steps[::-1], results.metrics)
 

@@ -12,9 +12,9 @@ class Board:
 
     def __init__(self, filename):
         file = open(filename, "r")
-        self.walls = []
+        self.walls = set()
         self.boxes = set()
-        self.goals = []
+        self.goals = set()
         self.player = None
         self.max_point = self.fill_board(file)
         # print(min_and_max)
@@ -34,19 +34,19 @@ class Board:
             x = 0
             for char in line:
                 if(char == "#"):
-                    self.walls.append((x,y))
+                    self.walls.add((x,y))
                 elif char == "^":
                     self.player = (x,y)
                 elif char == "o":
-                    self.goals.append((x,y))
+                    self.goals.add((x,y))
                 elif char == "x":
                     self.boxes.add((x,y))
                 elif char == "%":
                     self.boxes.add((x,y))
-                    self.goals.append((x,y))
+                    self.goals.add((x,y))
                 elif char == "$":
                     self.player = (x,y)
-                    self.goals.append((x,y))
+                    self.goals.add((x,y))
 
                 x += 1
                 if(x > max_x):
@@ -80,10 +80,10 @@ class Board:
                 boxes_copy.remove(new_position)
                 if(self.can_push_box(boxes_copy, new_position, direction)): 
                     #hay una box con las mismas coordenadas del player_left --> a esa le tengo que restar x y dejar y igual porque la estoy moviendo a la izq
-                    moves.append(Node(new_position, self.get_new_boxes(node.boxes, new_position, direction), node,direction)) #and player can push it
+                    moves.append(Node(new_position, self.get_new_boxes(node.boxes, new_position, direction), node,direction, node.depth + 1)) #and player can push it
                 #else move is not possible
             else: #there is no wall and no box
-                moves.append(Node(new_position, node.boxes, node, direction))
+                moves.append(Node(new_position, node.boxes, node, direction, node.depth + 1))
 
 
     def get_new_boxes(self, boxes, player, direction):
