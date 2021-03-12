@@ -51,5 +51,6 @@ print("nodes in frontier %d" %results.metrics.frontier)
 print("cost %d " %results.metrics.cost)
 results.metrics.time = (t1_stop-t1_start)*1000
 results.metrics.depth = depth
+results.metrics.cost = depth
 render((0,0), board.max_point, board.walls, board.boxes, board.goals, board.player, steps[::-1], results.metrics)
 

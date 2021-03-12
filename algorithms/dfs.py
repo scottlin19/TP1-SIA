@@ -9,7 +9,7 @@ from metrics import Metrics
 class DFS(SearchMethod):
     
     def search(self,board):
-        node = Node(board.player, board.boxes, None, None, 0)
+        node = Node(board.player, board.boxes, None, None)
         metrics = Metrics('DFS',False,0,0,0,0, 0, [])
         stack = []
         visited = set()

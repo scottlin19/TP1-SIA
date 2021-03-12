@@ -23,7 +23,7 @@ class IDDFS(SearchMethod):
 
     def search(self,board):
         
-        node = Node(board.player, board.boxes, None, None, 0)
+        node = Node(board.player, board.boxes, None, None)
         
         final_node = self.iddfs(node, board) 
         
@@ -52,8 +52,6 @@ class IDDFS(SearchMethod):
                 result = self.iddfs_rec(self.queue.pop(0), start, self.limit, board)
                 
                 if(result is not None):
-                    self.metrics.depth = result.depth
-                    self.metrics.cost = result.depth
                     self.metrics.data.append(start)
                    
                     return result
