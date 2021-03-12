@@ -17,7 +17,7 @@ class BFS(SearchMethod):
         visited = set()
         queue = []
         node = Node(board.player, board.boxes, None, None, 0)
-        metrics = Metrics('BFS',False,0,0,0,0)
+        metrics = Metrics('BFS',False,0,0,0,0, 0, [])
         queue.append(node)          #save initial node
         visited.add(node)           #save already visited nodes      
         
