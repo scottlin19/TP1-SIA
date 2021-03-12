@@ -43,7 +43,7 @@ class Heuristic:
             for o in obstacles: 
                 list_x = list(player[0], o[0], goal[0]) 
                 list_y = list(player[1], o[1], goal[1]) 
-                if (list_x in row or list_y in col)
+                if (list_x in row or list_y in col):
                     avoid +=1 
         
         return avoid 
