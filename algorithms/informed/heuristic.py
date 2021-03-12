@@ -61,7 +61,7 @@ class Heuristic:
         return len(goals) - occupied
   
 
-    def apply(node,board): 
+    def apply(self, node,board): 
         h1 = h_manhattan_distance_boxes_goals(node) #box-goal
         h2 = get_obstacles_to_avoid() 
         h3 = manhattan_distance() #player-goal
@@ -75,26 +75,34 @@ class Heuristic:
     def manhattan_distance(self, point1, point2): # |x1 - x2| + |y1 - y2|.
         return abs(point1[0] - point2[0]) + abs(point1[1] - point2[1])
     
-    def sort_by_f(n1, n2):
-        h1 = n1.h
-        h2 = n2.h
-        f1 = n1.depth + h1
-        f2 = n2.depth + h2
+    def sort_by_f(self, item):
+        f = item[0]
+        h = item[1].h
+        return (f,h)
+    # def sort_by_f(n1, n2):
+    #     h1 = n1.h
+    #     h2 = n2.h
+    #     f1 = n1.depth + h1
+    #     f2 = n2.depth + h2
 
-        if(f1 < f2): return -1
-        elif(f1 > f2): return 1
-        else:
-            if(h1 < h2): return -1
-            elif(h1 > h2): return 1
-            else: return 0
+    #     if(f1 < f2): return -1
+    #     elif(f1 > f2): return 1
+    #     else:
+    #         if(h1 < h2): return -1
+    #         elif(h1 > h2): return 1
+    #         else: return 0
 
-    def sort_by_h(n1, n2):
-        h1 = n1.h
-        h2 = n2.h
+    def sort_by_h(self, item):
+        h = item.h
+        return h
+    
+    # def sort_by_h(n1, n2):
+    #     h1 = n1.h
+    #     h2 = n2.h
 
-        if(h1 < h2): return -1
-        elif(h1 > h2): return 1
-        else: return 0
+    #     if(h1 < h2): return -1
+    #     elif(h1 > h2): return 1
+    #     else: return 0
 
 
     def sort_nodes(self, nodes, sort_func):

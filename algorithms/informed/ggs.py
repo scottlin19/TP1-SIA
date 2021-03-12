@@ -38,6 +38,8 @@ class GGS(SearchMethod):
                     frontier.append(move)
                     if(len(frontier) > 1):
                         frontier = heuristic.sort_nodes(frontier, heuristic.sort_by_h)
+                        # hs = [node.h for node in frontier]
+                        # print(hs)
 
         # Frontier is empty so there is no solution 
         metrics.success = False
