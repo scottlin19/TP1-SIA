@@ -54,7 +54,7 @@ class Board:
             y += 1
         return (max_x-1, y-1)
 
-    def get_possible_moves(self, node):
+    def get_possible_moves(self, node, checkDeadlocks):
         moves = [] #moves is an array of Nodes
 
         #calculate all moves 
@@ -63,14 +63,14 @@ class Board:
         player_up = (node.player[0], node.player[1] + 1)
         player_down = (node.player[0], node.player[1] - 1)
 
-        self.check_move(moves, node, player_left, LEFT)
-        self.check_move(moves, node, player_right, RIGHT)
-        self.check_move(moves, node, player_up, UP)
-        self.check_move(moves, node, player_down, DOWN)
+        self.check_move(moves, node, player_left, LEFT, checkDeadlocks)
+        self.check_move(moves, node, player_right, RIGHT, checkDeadlocks)
+        self.check_move(moves, node, player_up, UP, checkDeadlocks)
+        self.check_move(moves, node, player_down, DOWN, checkDeadlocks)
 
         return moves
 
-    def check_move(self, moves, node, new_position, direction):
+    def check_move(self, moves, node, new_position, direction, checkDeadlocks):
         #check there are no walls around. If there is box check if player can move it
         if(new_position not in self.walls):
             # aux = node.steps.copy()
@@ -78,12 +78,12 @@ class Board:
             if(new_position in node.boxes): #box next to player
                 boxes_copy = node.boxes.copy()
                 boxes_copy.remove(new_position)
-                if(self.can_push_box(boxes_copy, new_position, direction)): 
+                if(self.can_push_box(boxes_copy, new_position, direction, checkDeadlocks)): 
                     #hay una box con las mismas coordenadas del player_left --> a esa le tengo que restar x y dejar y igual porque la estoy moviendo a la izq
-                    moves.append(Node(new_position, self.get_new_boxes(node.boxes, new_position, direction), node,direction)) #and player can push it
+                    moves.append(Node(new_position, self.get_new_boxes(node.boxes, new_position, direction), node,direction, node.depth + 1)) #and player can push it
                 #else move is not possible
             else: #there is no wall and no box
-                moves.append(Node(new_position, node.boxes, node, direction))
+                moves.append(Node(new_position, node.boxes, node, direction, node.depth + 1))
 
 
     def get_new_boxes(self, boxes, player, direction):
@@ -110,8 +110,9 @@ class Board:
 
 
         return new_boxes
-    
-    def can_push_box(self, boxes, moved_player, direction):
+    """ Check is box can bu pushed, for each pusheable box if checkDeadlocks is true,
+     check if the resulting box position will result in a deadlock"""
+    def can_push_box(self, boxes, moved_player, direction, checkDeadlocks):
         
         if(direction == LEFT):
             pushed_box = (moved_player[0] -1, moved_player[1])
@@ -122,26 +123,27 @@ class Board:
         else:  
             pushed_box = (moved_player[0], moved_player[1] - 1)
 
-        if(pushed_box not in self.walls and pushed_box not in boxes):
-
-            if(pushed_box in self.goals):
-                return True
-
-            aux_left = (pushed_box[0]-1, pushed_box[1])
-            aux_right = (pushed_box[0]+1, pushed_box[1])
-            aux_up = (pushed_box[0], pushed_box[1]+1)
-            aux_down = (pushed_box[0], pushed_box[1]-1)
-
-            if(aux_up in self.walls or aux_up in boxes or aux_down in self.walls or aux_down in boxes):
-                if(aux_left in self.walls or aux_left in boxes or aux_right in self.walls or aux_right in boxes):
-                    return False
-
-            return True
-
-        else:
-            return False
+        if(checkDeadlocks): # deadlock check turned on
             
-        # return pushed_box not in self.walls and pushed_box not in boxes
+            if(pushed_box not in self.walls and pushed_box not in boxes):
+
+                if(pushed_box in self.goals):
+                    return True
+
+                aux_left = (pushed_box[0]-1, pushed_box[1])
+                aux_right = (pushed_box[0]+1, pushed_box[1])
+                aux_up = (pushed_box[0], pushed_box[1]+1)
+                aux_down = (pushed_box[0], pushed_box[1]-1)
+
+                if(aux_up in self.walls or aux_up in boxes or aux_down in self.walls or aux_down in boxes):
+                    if(aux_left in self.walls or aux_left in boxes or aux_right in self.walls or aux_right in boxes):
+                        return False
+
+                return True
+            else:
+                return False
+            
+        return pushed_box not in self.walls and pushed_box not in boxes # deadlock check turned off
 
     def is_completed(self, node):
         for box in node.boxes:

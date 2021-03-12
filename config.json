@@ -1,3 +1,5 @@
 {
-    "algorithm": "IDDFS"
+    "algorithm": "GGS",
+    "checkDeadlocks": true,
+    "heuristic": "lower_bound"
 }

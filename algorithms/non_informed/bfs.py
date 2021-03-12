@@ -8,15 +8,16 @@ from node import Node
 from metrics import Metrics
 from algorithms.searchMethod import SearchMethod
 from searchResults import SearchResults
-# tree = {} # hash donde la clave es: 'posición del player + posiciones de las cajas' y el valor es lista de nodos
 
+class BFS(SearchMethod): 
 
-class BFS(SearchMethod):
-    # Preguntar si depende de que nodos expandimos primero    
+    def __init__(self,checkDeadlocks):
+        super().__init__(checkDeadlocks)
+     
     def search(self,board):
         visited = set()
         queue = []
-        node = Node(board.player, board.boxes, None, None)
+        node = Node(board.player, board.boxes, None, None, 0)
         metrics = Metrics('BFS',False,0,0,0,0, 0, [])
         queue.append(node)          #save initial node
         visited.add(node)           #save already visited nodes      
@@ -31,7 +32,7 @@ class BFS(SearchMethod):
            
                 return SearchResults(metrics,curr)
           
-            moves = board.get_possible_moves(curr) #get a tree level
+            moves = board.get_possible_moves(curr,self.checkDeadlocks) #get a tree level
             if(moves): #curr has children
                 metrics.nodes_expanded += 1
             

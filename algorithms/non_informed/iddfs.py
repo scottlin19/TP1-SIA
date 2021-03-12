@@ -12,8 +12,8 @@ from metrics import Metrics
 LIMIT_INCREASE = 10
 
 class IDDFS(SearchMethod):
-    def __init__(self, limit):
-        super().__init__()
+    def __init__(self, limit, checkDeadlocks):
+        super().__init__(checkDeadlocks)
         self.limit = limit
         self.visited = set()
         self.metrics = Metrics('IDDFS',False,0,0,0,0, 0, [])
@@ -23,12 +23,12 @@ class IDDFS(SearchMethod):
 
     def search(self,board):
         
-        node = Node(board.player, board.boxes, None, None)
+        node = Node(board.player, board.boxes, None, None, 0)
         
         final_node = self.iddfs(node, board) 
         
         if(final_node is not None):
-            self.metrics.success = True
+            self.metrics.success = True 
             return SearchResults(self.metrics, final_node)
             
         self.metrics.success = False

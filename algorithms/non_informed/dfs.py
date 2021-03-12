@@ -8,8 +8,11 @@ from metrics import Metrics
 
 class DFS(SearchMethod):
     
+    def __init__(self,checkDeadlocks):
+        super().__init__(checkDeadlocks)
+
     def search(self,board):
-        node = Node(board.player, board.boxes, None, None)
+        node = Node(board.player, board.boxes, None, None, 0)
         metrics = Metrics('DFS',False,0,0,0,0, 0, [])
         stack = []
         visited = set()
@@ -34,21 +37,7 @@ class DFS(SearchMethod):
         # Stack is empty so there is no solution 
         metrics.success = False
         return SearchResults(metrics,None)
-                    
-            
-    """ def search(self, board): 
-        node = Node(board.player, board.boxes, [])
-        visited = self.searchRec(board, node, self.visited)   
-        print(visited)            
-
-    def searchRec(self, board, node, visited): 
-        if node not in self.visited: 
-            self.visited.append(node)
-            
-            moves = board.get_possible_moves(node)
-            for move in moves:
-                searchRec(self, board, move, visited)
-        return visited  """            
+      
         
                     
                     
