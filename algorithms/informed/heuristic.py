@@ -30,9 +30,36 @@ class Heuristic:
             min = None          
         return md
 
-    def h_get_obstacles_to_avoid(node):
-        pass
+    def h_get_obstacles_to_avoid(self, node):
+        #cajas/paredes que tengo que esquivar para llegar a goal --> Goal-caja-jugador tienen que estar en idem fila o en idem columna
+        avoid = 0
+        player = node.player
+        boxes = node.boxes
+        goals = self.board.goals
+        obstacles = []
+        obstacles.append(boxes).append(self.board.walls)
         
+        for goal in goals:
+            for o in obstacles: 
+                list_x = list(player[0], o[0], goal[0]) 
+                list_y = list(player[1], o[1], goal[1]) 
+                if (list_x in row or list_y in col)
+                    avoid +=1 
+        
+        return avoid 
+    
+    def h_get_free_goals(self, node):
+        #Goals that do not have a box yet
+        boxes = node.boxes
+        goals = self.board.goals
+        occupied = 0
+        for box in boxes:
+            for goal in goals: 
+                if(box[0] == goal[0] and box[1] == goal[1]):
+                    occupied +=1
+        
+        return len(goals) - occupied
+  
 
     def apply(node,board): 
         h1 = h_manhattan_distance_boxes_goals(node) #box-goal
