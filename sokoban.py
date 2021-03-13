@@ -9,11 +9,12 @@ from algorithms.non_informed.iddfs import IDDFS
 from algorithms.non_informed.dfs import DFS 
 from algorithms.informed.ggs import GGS
 from algorithms.informed.a_star import A_STAR
+from algorithms.informed.ida_star import IDA_STAR
 #Aca parseamos el file de entrada y vamos llamando a cada algoritmo de busqueda
 
 with open("config.json") as f:
     config = json.load(f)
-algorithm_list = ['BFS','DFS','IDDFS', 'GGS', 'A*']
+algorithm_list = ['BFS','DFS','IDDFS', 'GGS', 'A*', 'IDA*']
 config_algorithm = config.get('algorithm')
 config_heuristic = config.get('heuristic')
 config_map = config.get('map')

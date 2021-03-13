@@ -1,6 +1,6 @@
 {
-    "algorithm": "A*",
+    "algorithm": "IDA*",
     "checkDeadlocks": true,
     "heuristic": "lower_bound",
-    "map": "maps/soko3.txt"
+    "map": "maps/easy.txt"
 }
