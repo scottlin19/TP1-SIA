@@ -13,9 +13,10 @@ from algorithms.informed.a_star import A_STAR
 
 with open("config.json") as f:
     config = json.load(f)
-algorithm_list = ['BFS','DFS','IDDFS', 'GGS']
+algorithm_list = ['BFS','DFS','IDDFS', 'GGS', 'A*']
 config_algorithm = config.get('algorithm')
 config_heuristic = config.get('heuristic')
+config_map = config.get('map')
 checkDeadlocks = config.get('checkDeadlocks')
 
 algorithm = None
@@ -29,13 +30,13 @@ elif config_algorithm == 'DFS':
 elif config_algorithm == 'IDDFS':
     algorithm = IDDFS(2, checkDeadlocks)
 elif config_algorithm == 'A*':
-    algorithm = A_STAR(checkDeadlocks)
+    algorithm = A_STAR(config_heuristic, checkDeadlocks)
 elif config_algorithm == 'GGS':
     algorithm = GGS(config_heuristic, checkDeadlocks)
 elif config_algorithm == 'IDA*':
-    algorithm = IDA_STAR(checkDeadlocks)
+    algorithm = IDA_STAR(config_heuristic, checkDeadlocks)
     
-board = Board('maps/easy.txt')
+board = Board(config_map)
 
 t1_start = perf_counter()
 results = algorithm.search(board)

@@ -28,18 +28,20 @@ class GGS(SearchMethod):
             curr = frontier.pop(0)
             
             if board.is_completed(curr):
+                metrics.success = True
+                metrics.frontier = len(frontier)
                 return SearchResults(metrics, curr)
             
+            metrics.nodes_expanded +=1
             moves = board.get_possible_moves(curr, self.checkDeadlocks )
+            if(moves): #curr has children
+                metrics.nodes_expanded += 1
             for move in moves: #save in frontier by h
                 if(move not in visited):
                     move.h = heuristic.h(move)
                     visited.add(move)
                     frontier.append(move)
-                    if(len(frontier) > 1):
-                        frontier = heuristic.sort_nodes(frontier, heuristic.sort_by_h)
-                        # hs = [node.h for node in frontier]
-                        # print(hs)
+                    frontier = heuristic.sort_nodes(frontier, heuristic.sort_by_h)
 
         # Frontier is empty so there is no solution 
         metrics.success = False
