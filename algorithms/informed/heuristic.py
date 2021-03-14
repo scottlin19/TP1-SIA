@@ -1,12 +1,11 @@
-import math
+import sys
+
 # Heuristics
 # h1 = manhattan distance box-player
 # h2 = min manhattan distance box-goal (Minimun lower bound)
 # h3 = #obstacles to avoid
 # h4 = 
 # Strategy --> Mix:  h = Max(h1, h2, h3) AND deadlocks
-from itertools import product,permutations 
-import sys
 class Heuristic:
 
     def __init__(self, board, heuristic):
