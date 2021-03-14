@@ -1,6 +1,6 @@
 {
-    "algorithm": "A*", 
+    "algorithm": "BFS", 
     "checkDeadlocks": true,
-    "heuristic": "player_box_goal",
-    "map": "maps/soko1.txt"
+    "heuristic": "simple_lower_bound",
+    "map": "maps/hard.txt"
 }

@@ -27,13 +27,14 @@ class IDA_STAR(SearchMethod):
 
         if(final_node is not None):
             self.metrics.success = True 
+            self.metrics.frontier = len(self.stack)
             return SearchResults(self.metrics, final_node)
             
         self.metrics.success = False
         return SearchResults(self.metrics, None)
 
     def ida(self, board, node, heuristic):
-        bound = heuristic.h(node)
+        bound = heuristic.h(node) #cost = 0 --> f = h
 
         while True:
             self.stack.append(node)
@@ -41,9 +42,7 @@ class IDA_STAR(SearchMethod):
 
             while self.stack:
                 curr = self.stack[-1] # último elemento de la lista
-
-                self.metrics.nodes_expanded +=1
-
+ 
                 if board.is_completed(curr):
                     self.metrics.success = True
                     return curr
@@ -51,7 +50,9 @@ class IDA_STAR(SearchMethod):
                 if curr not in self.visited:
                     self.visited.add(curr)
                     moves = heuristic.sort_nodes(board.get_possible_moves(curr, self.checkDeadlocks), heuristic.sort_by_f)
-                    
+                    if(moves): #curr has children
+                        self.metrics.nodes_expanded += 1
+                        
                     for move in moves:
                         f = move.depth + heuristic.h(move)
                         if f <= bound:
@@ -61,7 +62,8 @@ class IDA_STAR(SearchMethod):
                             if f < min_cost:
                                 min_cost = f
                 else:
-                    self.stack.pop()
+                    node_out = self.stack.pop()
+                    f_out = node_out.depth + heuristic.h(node_out)
                     self.visited.remove(curr)
             
             bound = min_cost

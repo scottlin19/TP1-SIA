@@ -64,8 +64,6 @@ node = results.final_node
 if(node.h != 0):
     consistent = False
 while node is not None and node.prev is not None:
-    print("prev: %d" %node.prev.h)
-    print(node.h)
     if(node.prev.h > 1 + node.h ):
         consistent = False 
     node = node.prev
@@ -76,7 +74,7 @@ OPTIMAL_SN = 78
 admissible = True 
 node = results.final_node
 while node is not None and node.prev is not None:
-    if(node.h > OPTIMAL_SN - node.depth ): #for soko1
+    if(node.h > OPTIMAL_SN - node.depth ): #for soko1   h(n)
         admissible = False 
     node = node.prev   
         

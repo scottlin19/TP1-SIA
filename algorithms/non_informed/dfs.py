@@ -28,7 +28,9 @@ class DFS(SearchMethod):
                 return SearchResults(metrics,curr)
              
             moves = board.get_possible_moves(curr)
-          
+            if(moves): #curr has children
+                metrics.nodes_expanded += 1
+            
             for move in moves:
                 if move not in visited: 
                     stack.append(move)
