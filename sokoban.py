@@ -61,7 +61,7 @@ while node is not None and node.prev is not None:
 #With A* check if the heuristic is consistent => heuristic is admissible
 consistent = True 
 node = results.final_node
-if(node.h is not 0):
+if(node.h != 0):
     consistent = False
 while node is not None and node.prev is not None:
     print("prev: %d" %node.prev.h)
