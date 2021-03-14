@@ -16,11 +16,14 @@ class Node:
     def __repr__(self):
         return self.__str__()
 
-    # def __eq__(self, other):
-    #     return (isinstance(other, self.__class__) and other.player == self.player and other.boxes == self.boxes)
+    def __lt__(self, other):
+        f1 = self.depth + self.h
+        f2 = other.depth + other.h
 
-    # def __hash__(self):
-    #     return hash(self.__str__())
+        if(f1 == f2):
+            return self.h < other.h
+
+        return f1 < f2
 
     def __eq__(self, other):
         return (isinstance(other, self.__class__) and other.player == self.player and other.boxes == self.boxes)

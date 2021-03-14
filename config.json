@@ -1,6 +1,6 @@
 {
-    "algorithm": "BFS", 
+    "algorithm": "A*", 
     "checkDeadlocks": true,
     "heuristic": "simple_lower_bound",
-    "map": "maps/hard.txt"
+    "map": "maps/soko1.txt"
 }
