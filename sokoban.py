@@ -67,7 +67,7 @@ while node is not None and node.prev is not None:
     if(node.prev.h > 1 + node.h ):
         consistent = False 
     node = node.prev
-if(node.h is not 0):
+if(node.h != 0):
     consistent = False
     
 #Another way to check if is admissble

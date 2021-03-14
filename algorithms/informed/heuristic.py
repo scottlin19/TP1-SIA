@@ -1,20 +1,22 @@
+import math
 # Heuristics
 # h1 = manhattan distance box-player
 # h2 = min manhattan distance box-goal (Minimun lower bound)
 # h3 = #obstacles to avoid
 # h4 = 
-
 # Strategy --> Mix:  h = Max(h1, h2, h3) AND deadlocks
-
+from itertools import product,permutations 
+import sys
 class Heuristic:
 
     def __init__(self, board, heuristic):
         self.board = board
         self.heuristics = {
-            'lower_bound': self.h_simple_lower_bound, #por ahora la mejor. Es consistente --> admisible
+            'simple_lower_bound': self.h_simple_lower_bound, #por ahora la mejor. Es consistente --> admisible
             'player_boxes': self.h_sum_distances_player_boxes, #no es consistente pero encontro la optima. No puedo asegurar que sea no admisible
             'free_goals': self.h_get_free_goals, #es < que lower_bound y tarda mas --> No conviene agarrar esta. Es consistente --> es admisible pero creo que es trivial
-            'player_box_goal': self.h_player_box_goal #no es consistente, no encontro la optima --> no admisible y encima tardó más
+            'player_box_goal': self.h_player_box_goal, #no es consistente, no encontro la optima --> no admisible y encima tardó más
+            'minimum_matching_lower_bound': self.h_minimum_matching_lower_bound
         }
         self.h = self.heuristics[heuristic]
  
@@ -31,7 +33,54 @@ class Heuristic:
             min = None          
         return md
 
-    """def h_get_obstacles_to_avoid(self, node):
+
+    def permute(self,a, results):
+        if len(a) == 1:
+            results.insert(len(results), a)
+        else:
+            for i in range(0, len(a)):
+                element = a[i]
+                a_copy = [a[j] for j in range(0, len(a)) if j != i]
+                subresults = []
+                self.permute(a_copy, subresults)
+                for subresult in subresults:
+                    result = [element] + subresult
+                    results.insert(len(results), result)
+
+    # Expensive to calculate when too many boxes, calculating permutations is O(n!)
+    def h_minimum_matching_lower_bound(self,node):
+        minval = sys.maxsize
+        boxes = node.boxes
+        goals = self.board.goals
+        possible_assignments = []
+        # boxes_permutations = list(permutations(boxes))
+        # for boxes in boxes_permutations:
+        #     aux_sum = 0
+        #     i = 0
+        #     for box in boxes:
+        #         aux_goals = list(goals)
+        #         aux_sum += self.manhattan_distance(box,aux_goals[i])
+        #         i += 1
+        #     if aux_sum < min_sum:
+        #         min_sum = aux_sum
+        # return min_sum  
+        for box in boxes:
+            box_assignments = []
+            for goal in goals:
+                box_assignments.append(self.manhattan_distance(box,goal))
+            possible_assignments.append(box_assignments)
+        results = []
+        self.permute(range(len(possible_assignments)), results) # Get all possible permutations for possible assignment matrix
+        for indexes in results:
+            cost = 0
+            for i, j in enumerate(indexes):
+                cost += possible_assignments[i][j]
+            minval = min(cost, minval)
+        return minval
+        
+
+
+    """ def h_get_obstacles_to_avoid(self, node):
         #cajas/paredes que tengo que esquivar para llegar a goal --> Goal-caja-jugador tienen que estar en idem fila o en idem columna
         avoid = 0
         player = node.player
