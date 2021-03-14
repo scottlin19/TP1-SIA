@@ -61,14 +61,15 @@ while node is not None and node.prev is not None:
 #With A* check if the heuristic is consistent => heuristic is admissible
 consistent = True 
 node = results.final_node
+if(node.h is not 0):
+    consistent = False
 while node is not None and node.prev is not None:
     print("prev: %d" %node.prev.h)
     print(node.h)
     if(node.prev.h > 1 + node.h ):
         consistent = False 
     node = node.prev
-if(node.h is not 0):
-    consistent = False
+
     
 #Another way to check if is admissble
 OPTIMAL_SN = 78
@@ -96,14 +97,14 @@ render((0,0), board.max_point, board.walls, board.boxes, board.goals, board.play
 
 
 def heuristic_is_consistent( node):
-     
+    
+    if(node.h != 0): #If it is consistent h(goal) = 0
+        return False
+    
     while node is not None and node.prev is not None:
         if(node.prev.h > 1 + node.h ): #as they are neighbours, if it's consistent h(ni) <= cost(ni, nj) + h(nj)
             return False
         node = node.prev
-        
-    if(node.h != 0): #If consistent h(goal) = 0
-        return False
     
     return True 
 
