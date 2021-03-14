@@ -1,6 +1,6 @@
 {
     "algorithm": "A*", 
     "checkDeadlocks": true,
-    "heuristic": "player_box_goal",
+    "heuristic": "free_goals",
     "map": "maps/soko1.txt"
 }

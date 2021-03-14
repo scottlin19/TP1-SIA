@@ -70,9 +70,17 @@ while node is not None and node.prev is not None:
 if(node.h is not 0):
     consistent = False
     
-    
-    
-print("consistent: %r" %consistent)        
+#Another way to check if is admissble
+OPTIMAL_SN = 78
+admissible = True 
+node = results.final_node
+while node is not None and node.prev is not None:
+    if(node.h > OPTIMAL_SN - node.depth ): #for soko1
+        admissible = False 
+    node = node.prev   
+        
+print("consistent: %r" %consistent)    
+print("admissible: %r" %admissible)     
 print(steps[::-1])
 print(len(steps))
 print("depth: %d" %depth)
@@ -88,10 +96,25 @@ render((0,0), board.max_point, board.walls, board.boxes, board.goals, board.play
 
 
 def heuristic_is_consistent( node):
-    consistent = True 
+     
     while node is not None and node.prev is not None:
         if(node.prev.h > 1 + node.h ):
-            consistent = False
-            return consistent
+            return False
         node = node.prev
-    return consistent
+        
+    if(node.h != 0): #If consistent h(goal) = 0
+        return False
+    
+    return True 
+
+
+def heuristic_is_admissible(node):
+    OPTIMAL_SN = 78 #for soko1
+    
+    node = results.final_node
+    while node is not None and node.prev is not None:
+        if(node.h > OPTIMAL_SN - node.depth ): 
+            return False
+        node = node.prev  
+    
+    return True
