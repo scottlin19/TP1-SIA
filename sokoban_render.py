@@ -99,6 +99,10 @@ def render(min, max, walls, boxes, goals, player, steps, metrics):
 
     SCREEN_WIDTH = (max[0]-min[0]+1)*math.ceil(brick.width) + METRICS_WIDTH
     SCREEN_HEIGHT = (max[1]-min[1]+1)*math.ceil(brick.height) 
+    print("SCREEN")
+    print(SCREEN_WIDTH)
+    print(SCREEN_HEIGHT)
+    print("---------")
 
     game = MyGame(SCREEN_WIDTH, SCREEN_HEIGHT)
     game.setup(walls, boxes, goals, player, metrics)
