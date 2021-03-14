@@ -2,5 +2,5 @@
     "algorithm": "IDA*",
     "checkDeadlocks": true,
     "heuristic": "lower_bound",
-    "map": "maps/easy.txt"
+    "map": "maps/soko1.txt"
 }
