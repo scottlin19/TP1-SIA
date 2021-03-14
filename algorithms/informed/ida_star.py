@@ -63,7 +63,6 @@ class IDA_STAR(SearchMethod):
                                 min_cost = f
                 else:
                     node_out = self.stack.pop()
-                    f_out = node_out.depth + heuristic.h(node_out)
                     self.visited.remove(curr)
             
             bound = min_cost
