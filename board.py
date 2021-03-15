@@ -54,7 +54,7 @@ class Board:
             y += 1
         return (max_x-1, y-1)
 
-    def get_possible_moves(self, node, checkDeadlocks):
+    def get_possible_moves(self, node, checkDeadlocks=False):
         moves = [] #moves is an array of Nodes
 
         #calculate all moves 
