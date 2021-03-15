@@ -1,5 +1,5 @@
 {
-    "algorithm": "A*", 
+    "algorithm": "IDDFS", 
     "checkDeadlocks": true,
     "heuristic": "simple_lower_bound",
     "map": "maps/soko1.txt"

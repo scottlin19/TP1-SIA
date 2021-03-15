@@ -5,8 +5,6 @@ from searchResults import SearchResults
 from algorithms.informed.heuristic import Heuristic
 import bisect
 
-
-
 class A_STAR(SearchMethod):
 
     def __init__(self, heuristic, checkDeadlocks):

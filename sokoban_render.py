@@ -70,20 +70,21 @@ class MyGame(arcade.Window):
         
         arcade.draw_rectangle_filled(start_x, start_y, METRICS_WIDTH , self.height, arcade.color.CATALINA_BLUE) 
         
-        arcade.draw_text("SOKOBAN SOLVER", start_x - 100, start_y + 200, arcade.color.WHITE, 20, anchor_y="top")
-        arcade.draw_text("Search Method: " + self.metrics.params, start_x - 120, start_y + 160, arcade.color.WHITE, 18, anchor_y="top")
+        arcade.draw_text("SOKOBAN SOLVER", start_x - 100, start_y * 2 - 10, arcade.color.WHITE, 20, anchor_y="top")
+        arcade.draw_text("Search Method: " + self.metrics.params, start_x - 120, start_y *2 - 50, arcade.color.WHITE, 18, anchor_y="top")
         if(self.metrics.success == False):
-            arcade.draw_text("No Solution", start_x - 90, start_y + 120, arcade.color.WHITE, 16, anchor_y="top")
+            arcade.draw_text("No Solution", start_x - 90, start_y , arcade.color.WHITE, 16, anchor_y="top")
         else:
-            arcade.draw_text("Solution Found", start_x - 90, start_y + 120, arcade.color.WHITE, 16, anchor_y="top")
+            arcade.draw_text("Solution Found", start_x - 90, start_y + 40, arcade.color.WHITE, 16, anchor_y="top")
+        
              
-        arcade.draw_text("Depth: %d" %self.metrics.depth, start_x - 140, start_y + 80, arcade.color.WHITE, 15, anchor_y="top")
-        arcade.draw_text("Nodes Expanded: %d" %self.metrics.nodes_expanded, start_x - 140, start_y + 55, arcade.color.WHITE, 15, anchor_y="top")
-        arcade.draw_text("Nodes in Frontier: %d" %self.metrics.frontier, start_x - 140, start_y + 35, arcade.color.WHITE, 15, anchor_y="top")
-        arcade.draw_text("Cost: %d" %self.metrics.cost, start_x - 140, start_y + 15, arcade.color.WHITE, 15, anchor_y="top")
-        arcade.draw_text("Time: %d ms" %self.metrics.time, start_x - 140, start_y, arcade.color.WHITE, 15, anchor_y="top")
+        arcade.draw_text("Depth: %d" %self.metrics.depth, start_x - 140, start_y - 10, arcade.color.WHITE, 15, anchor_y="top")
+        
+        arcade.draw_text("Nodes Expanded: %d" %self.metrics.nodes_expanded, start_x - 140, start_y - 60, arcade.color.WHITE, 15, anchor_y="top")
+        arcade.draw_text("Nodes in Frontier: %d" %self.metrics.frontier, start_x - 140, start_y - 40, arcade.color.WHITE, 15, anchor_y="top")
+        arcade.draw_text("Time: %d ms" %self.metrics.time, start_x - 140, start_y - 90, arcade.color.WHITE, 15, anchor_y="top")
         if(self.metrics.success == True and self.metrics.params == 'IDDFS'):
-            arcade.draw_text("Could be a better solution\nbetween %d and %d" %(self.metrics.data[0], self.metrics.depth), start_x - 140, start_y - 15, arcade.color.WHITE, 15, anchor_y="top")
+            arcade.draw_text("Maybe better solution (%d ; %d]" %(self.metrics.data[0], self.metrics.depth), start_x - 140, 15, arcade.color.WHITE, 10, anchor_y="top")
         
         
         # End

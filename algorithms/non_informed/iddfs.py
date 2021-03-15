@@ -4,7 +4,6 @@ from algorithms.searchMethod import SearchMethod
 from searchResults import SearchResults
 from metrics import Metrics
 
-# source: https://www.geeksforgeeks.org/iterative-deepening-searchids-iterative-deepening-depth-first-searchiddfs/
 # Por ahora si no encuentra la solucion corta
 # La idea sería : Si no encontro la solucion duplico la profundidad y empiezo a buscar a partir de last_depth 
 #                 Si encontró la solución, es la más óptima? Cómo hago para ver eso. Buscar entre last_depth en la que no hubo solución y la depth a la que sí encontré la sn. Y ahí en cuando habría que meter bisección
