@@ -5,6 +5,7 @@ from searchResults import SearchResults
 from metrics import Metrics
 from algorithms.informed.heuristic import Heuristic
 import math
+from time import perf_counter
  
 # source: https://es.coursera.org/lecture/resolucion-busqueda/algoritmo-a-con-profundidad-iterada-ida-9bJZe
 
@@ -12,81 +13,64 @@ class IDA_STAR(SearchMethod):
     def __init__(self, heuristic, checkDeadlocks):
         super().__init__(checkDeadlocks)
         self.heuristic = heuristic
-        self.limit = 0
         self.visited = set()
         self.metrics = Metrics('IDA*',False,0,0,0,0, 0, [])
-        self.queue = []
-        self.solution_found = False
-
-
+        self.stack = []
+        self.counter = 0
+    
     def search(self,board):
-        
+
         heuristic = Heuristic(board, self.heuristic)
-        node = Node(board.player, board.boxes, None, None, 0)
-        self.limit =  heuristic.h(node) #cost is 0 --> F = H
-        final_node = self.iddfs(node, board, heuristic) 
         
+        node = Node(board.player, board.boxes, None, None, 0)
+        node.h = heuristic.h(node)
+
+        final_node = self.ida(board, node, heuristic)
+
         if(final_node is not None):
             self.metrics.success = True 
-            self.metrics.frontier = len(self.queue)
+            self.metrics.frontier = len(self.stack)
             return SearchResults(self.metrics, final_node)
             
         self.metrics.success = False
         return SearchResults(self.metrics, None)
-   
-    
-    def iddfs(self, node, board, heuristic):
-        self.queue.append(node)
-        start = 0
 
-        result = self.iddfs_rec(self.queue.pop(0), start, self.limit, board)
-        if(result is not None):
-            return result
-        else: #no encontré sn, vuelvo a empezar con limit = min_f
-            start = 0
-            min_f = math.inf
+    def ida(self, board, node, heuristic):
+        bound = heuristic.h(node) #cost = 0 --> f = h
 
-            while len(self.queue) > 0:
-                result = self.iddfs_rec(self.queue.pop(0), start, self.limit, board)
-                
-                if(result is not None):
-                    return result
-             
-                for node in self.queue:
-                    f = node.depth + heuristic.h(node)
-                    if f < min_f: 
-                        min_f = f
-                self.limit = min_f
-                
+        while True:
+            self.stack.append(node)
+            min_cost = math.inf
 
-        # NO SOLUTION
-        self.metrics.success = False
-        return None
+            while self.stack:
+                curr = self.stack[-1] # último elemento de la lista
+                # print('curr f:', curr.depth + curr.h)
+                # print('stack:', list(map(lambda x: x.depth + x.h, self.stack)))
+                # print('\n')
+ 
+                if board.is_completed(curr):
+                    self.metrics.success = True
+                    return curr
 
-
-    def iddfs_rec(self, node, start, limit, board):
-        
-        if(board.is_completed(node)): #sn found
-            self.solution_found = True
-            return node
-
-        if(start == limit): #reached max_depth and sn not found
-            self.queue.append(node)
-            return None
-
-        self.visited.add(node)
-        self.metrics.nodes_expanded += 1
-        
-        moves = board.get_possible_moves(node)
-
-        for move in moves:
-            if(move not in self.visited):
-                self.visited.add(move)
-                result = self.iddfs_rec(move, start+1, limit, board)
-                if(result is not None):
-                    return result
+                if curr not in self.visited:
+                    self.visited.add(curr)
+                    moves = heuristic.sort_nodes(board.get_possible_moves(curr, self.checkDeadlocks), heuristic.sort_by_f)
+                    if(moves): #curr has children
+                        self.metrics.nodes_expanded += 1
+                        
+                    for move in moves:
+                        move.h = heuristic.h(move)
+                        f = move.depth + move.h
+                        if f <= bound:
+                            if move not in self.visited:
+                                self.stack.append(move)
+                        else:
+                            if f < min_cost:
+                                min_cost = f
+                else:
+                    node_out = self.stack.pop()
+                    self.visited.remove(curr)
             
-        return None
-
-
-
+            bound = min_cost
+            if bound is math.inf:
+                return None

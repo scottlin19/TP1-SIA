@@ -19,9 +19,13 @@ class IDA_STAR(SearchMethod):
     
     def search(self,board):
 
-        heuristic = Heuristic(board, self.heuristic)
+        self.heuristic = Heuristic(board, self.heuristic)
         
         node = Node(board.player, board.boxes, None, None, 0)
+        node.h = self.heuristic.h(node)
+        bound = node.h
+        while True:
+            final_node = ida_rec(board, node, )
 
         final_node = self.ida(board, node, heuristic)
 
