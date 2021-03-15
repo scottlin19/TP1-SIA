@@ -2,7 +2,7 @@ from board import Board
 import json
 from time import perf_counter 
 from sokoban_render import render
-
+from invalidMapException import InvalidMapException
 #Search methods
 from algorithms.non_informed.bfs import BFS  
 from algorithms.non_informed.iddfs import IDDFS  
@@ -36,62 +36,64 @@ elif config_algorithm == 'GGS':
     algorithm = GGS(config_heuristic, checkDeadlocks)
 elif config_algorithm == 'IDA*':
     algorithm = IDA_STAR(config_heuristic, checkDeadlocks)
-    
-board = Board(config_map)
 
-t1_start = perf_counter()
-results = algorithm.search(board)
-# Stop the stopwatch / counter 
-t1_stop = perf_counter()         
-print("Elapsed time:", t1_stop, t1_start)
-print("Elapsed time during the whole program in ms:", (t1_stop-t1_start)*1000) 
+try:
+    board = Board(config_map)
+    t1_start = perf_counter()
+    results = algorithm.search(board)
+    # Stop the stopwatch / counter 
+    t1_stop = perf_counter()         
+    print("Elapsed time:", t1_stop, t1_start)
+    print("Elapsed time during the whole program in ms:", (t1_stop-t1_start)*1000) 
 
-node = results.final_node
-print(node)
-steps = []
-depth = 0
+    node = results.final_node
+    print(node)
+    steps = []
+    depth = 0
 
-while node is not None and node.prev is not None:
-    depth += 1
-    steps.append(node.direction)
-    node = node.prev
+    while node is not None and node.prev is not None:
+        depth += 1
+        steps.append(node.direction)
+        node = node.prev
 
 
 
-#With A* check if the heuristic is consistent => heuristic is admissible
-consistent = True 
-node = results.final_node
-if(node.h != 0):
-    consistent = False
-while node is not None and node.prev is not None:
-    if(node.prev.h > 1 + node.h ):
-        consistent = False 
-    node = node.prev
+    #With A* check if the heuristic is consistent => heuristic is admissible
+    # consistent = True 
+    # node = results.final_node
+    # if(node.h != 0):
+    #     consistent = False
+    # while node is not None and node.prev is not None:
+    #     if(node.prev.h > 1 + node.h ):
+    #         consistent = False 
+    #     node = node.prev
 
-    
-#Another way to check if is admissble
-OPTIMAL_SN = 78
-admissible = True 
-node = results.final_node
-while node is not None and node.prev is not None:
-    if(node.h > OPTIMAL_SN - node.depth ): #for soko1   h(n)
-        admissible = False 
-    node = node.prev   
         
-print("consistent: %r" %consistent)    
-print("admissible: %r" %admissible)     
-print(steps[::-1])
-print(len(steps))
-print("depth: %d" %depth)
-print("params: " + results.metrics.params)
-print("success %r" %results.metrics.success)
-print("nodes expanded %d" %results.metrics.nodes_expanded)
-print("nodes in frontier %d" %results.metrics.frontier)
-print("cost %d " %results.metrics.cost)
-results.metrics.time = (t1_stop-t1_start)*1000
-results.metrics.depth = depth
-results.metrics.cost = depth
-render((0,0), board.max_point, board.walls, board.boxes, board.goals, board.player, steps[::-1], results.metrics)
+    # #Another way to check if is admissble
+    # OPTIMAL_SN = 78
+    # admissible = True 
+    # node = results.final_node
+    # while node is not None and node.prev is not None:
+    #     if(node.h > OPTIMAL_SN - node.depth ): #for soko1   h(n)
+    #         admissible = False 
+    #     node = node.prev   
+            
+    # print("consistent: %r" %consistent)    
+    # print("admissible: %r" %admissible)     
+    print(steps[::-1])
+    print(len(steps))
+    print("depth: %d" %depth)
+    print("params: " + results.metrics.params)
+    print("success %r" %results.metrics.success)
+    print("nodes expanded %d" %results.metrics.nodes_expanded)
+    print("nodes in frontier %d" %results.metrics.frontier)
+    print("cost %d " %results.metrics.cost)
+    results.metrics.time = (t1_stop-t1_start)*1000
+    results.metrics.depth = depth
+    results.metrics.cost = depth
+    render((0,0), board.max_point, board.walls, board.boxes, board.goals, board.player, steps[::-1], results.metrics)
+except InvalidMapException as e:
+    print(str(e))
 
 
 def heuristic_is_consistent( node):

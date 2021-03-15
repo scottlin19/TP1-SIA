@@ -1,7 +1,7 @@
 #Logica del juego. Tiene todas las posiciones 
 from node import Node
 from sokoban_render import render
-
+from invalidMapException import InvalidMapException
 
 LEFT = 'l'
 RIGHT = 'r'
@@ -52,6 +52,8 @@ class Board:
                 if(x > max_x):
                     max_x = x
             y += 1
+        if(len(self.boxes) == 0 or len(self.goals) == 0): raise InvalidMapException("ERROR: Map must have at least one box and goal")
+        elif(len(self.boxes) != len(self.goals)): raise InvalidMapException("ERROR: Map must have same amount of boxes and goals")
         return (max_x-1, y-1)
 
     def get_possible_moves(self, node, checkDeadlocks):
