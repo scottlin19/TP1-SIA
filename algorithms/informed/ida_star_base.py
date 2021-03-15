@@ -5,6 +5,7 @@ from searchResults import SearchResults
 from metrics import Metrics
 from algorithms.informed.heuristic import Heuristic
 import math
+from time import perf_counter
  
 # source: https://es.coursera.org/lecture/resolucion-busqueda/algoritmo-a-con-profundidad-iterada-ida-9bJZe
 
@@ -15,17 +16,14 @@ class IDA_STAR(SearchMethod):
         self.visited = set()
         self.metrics = Metrics('IDA*',False,0,0,0,0, 0, [])
         self.stack = []
-        self.solution_found = False
+        self.counter = 0
     
     def search(self,board):
 
-        self.heuristic = Heuristic(board, self.heuristic)
+        heuristic = Heuristic(board, self.heuristic)
         
         node = Node(board.player, board.boxes, None, None, 0)
-        node.h = self.heuristic.h(node)
-        bound = node.h
-        while True:
-            final_node = ida_rec(board, node, )
+        node.h = heuristic.h(node)
 
         final_node = self.ida(board, node, heuristic)
 
@@ -46,6 +44,9 @@ class IDA_STAR(SearchMethod):
 
             while self.stack:
                 curr = self.stack[-1] # último elemento de la lista
+                print('curr f:', curr.depth + curr.h)
+                print('stack:', list(map(lambda x: x.depth + x.h, self.stack)))
+                print('\n')
  
                 if board.is_completed(curr):
                     self.metrics.success = True
@@ -58,7 +59,8 @@ class IDA_STAR(SearchMethod):
                         self.metrics.nodes_expanded += 1
                         
                     for move in moves:
-                        f = move.depth + heuristic.h(move)
+                        move.h = heuristic.h(move)
+                        f = move.depth + move.h
                         if f <= bound:
                             if move not in self.visited:
                                 self.stack.append(move)
