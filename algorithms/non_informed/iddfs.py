@@ -86,7 +86,7 @@ class IDDFS(SearchMethod):
         self.visited.add(node)
         self.metrics.nodes_expanded += 1
         
-        moves = board.get_possible_moves(node)
+        moves = board.get_possible_moves(node, self.checkDeadlocks)
 
         for move in moves:
             if(move not in self.visited):
