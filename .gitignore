@@ -1,3 +1,5 @@
 game.py
 solutions/*
 __pycache__
+# .vscode
+config.json
