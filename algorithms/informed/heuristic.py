@@ -1,5 +1,5 @@
 import sys
-
+from munkres import Munkres 
 # Heuristics
 # h1 = manhattan distance box-player
 # h2 = min manhattan distance box-goal (Minimun lower bound)
@@ -46,29 +46,9 @@ class Heuristic:
                     result = [element] + subresult
                     results.insert(len(results), result)
 
-    # Expensive to calculate when too many boxes, calculating permutations is O(n!)
-    def h_minimum_matching_lower_bound(self,node):
-        minval = sys.maxsize
-        boxes = node.boxes
-        goals = self.board.goals
-        possible_assignments = []
-        # boxes_permutations = list(permutations(boxes))
-        # for boxes in boxes_permutations:
-        #     aux_sum = 0
-        #     i = 0
-        #     for box in boxes:
-        #         aux_goals = list(goals)
-        #         aux_sum += self.manhattan_distance(box,aux_goals[i])
-        #         i += 1
-        #     if aux_sum < min_sum:
-        #         min_sum = aux_sum
-        # return min_sum  
-        for box in boxes:
-            box_assignments = []
-            for goal in goals:
-                box_assignments.append(self.manhattan_distance(box,goal))
-            possible_assignments.append(box_assignments)
+    def use_permutation(self,possible_assignments):
         results = []
+        minval = sys.maxsize
         self.permute(range(len(possible_assignments)), results) # Get all possible permutations for possible assignment matrix
         for indexes in results:
             cost = 0
@@ -76,8 +56,31 @@ class Heuristic:
                 cost += possible_assignments[i][j]
             minval = min(cost, minval)
         return minval
-        
 
+    def use_munkres(self,possible_assignments):
+        m = Munkres()
+        results = m.compute(possible_assignments)
+        minval = 0
+        for row, column in results:
+            value = possible_assignments[row][column]
+            minval += value
+        return minval
+
+    # Expensive to calculate when too many boxes, calculating permutations is O(n!)
+    def h_minimum_matching_lower_bound(self,node):
+        minval = sys.maxsize
+        boxes = node.boxes
+        goals = self.board.goals
+        possible_assignments = []
+        for box in boxes:
+            box_assignments = []
+            for goal in goals:
+                box_assignments.append(self.manhattan_distance(box,goal))
+            possible_assignments.append(box_assignments)
+        if(len(boxes) < 4):
+            return self.use_permutation(possible_assignments)
+        else:
+            return self.use_munkres(possible_assignments)
 
     """ def h_get_obstacles_to_avoid(self, node):
         #cajas/paredes que tengo que esquivar para llegar a goal --> Goal-caja-jugador tienen que estar en idem fila o en idem columna
