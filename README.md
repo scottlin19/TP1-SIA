@@ -27,13 +27,13 @@ Dentro del archivo `config.json`, que está en directorio raíz del proyecto, se
 
 - "algorithm": algoritmo de búsqueda a utilizar (BFS, DFS, IDDFS, A*, GGS, IDA*).
 - "checkDeadlocks": booleano para indicar si se deben verificar los estados muertos o no.
-- "heuristic": heurística a utiliar (solo tiene efecto en los métodos informados). Las posibilidades son:
+- "heuristic": heurística a utilizar (solo tiene efecto en los métodos informados). Las posibilidades son:
 -- "simple_lower_bound" (suma de las distancias manhattan mínimas de las cajas a los goals)
 -- "player_boxes"
 -- "free_goals"
 -- "player_box_goal"
 -- "minimum_matching_lower_bound"
-- "map": directorio del mapa a utilizar (Ej: "map/easy.txt")
+- "map": directorio del mapa a utilizar (Ej: "maps/easy.txt")
 
 Una vez configurados todos los parámentros, ejecutar el siguiente comando para correr el proyecto:
 ```bash
