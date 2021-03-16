@@ -77,7 +77,7 @@ class Heuristic:
             for goal in goals:
                 box_assignments.append(self.manhattan_distance(box,goal))
             possible_assignments.append(box_assignments)
-        if(len(boxes) < 4):
+        if(len(boxes) < 7):
             return self.use_permutation(possible_assignments)
         else:
             return self.use_munkres(possible_assignments)
