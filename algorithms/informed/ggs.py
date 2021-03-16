@@ -31,7 +31,7 @@ class GGS(SearchMethod):
                 metrics.success = True
                 metrics.frontier = len(frontier)
                 return SearchResults(metrics, curr)
-            
+            visited.add(curr)
             metrics.nodes_expanded +=1
             moves = board.get_possible_moves(curr, self.checkDeadlocks )
             if(moves): #curr has children
@@ -39,7 +39,6 @@ class GGS(SearchMethod):
             for move in moves: #save in frontier by h
                 if(move not in visited):
                     move.h = heuristic.h(move)
-                    visited.add(move)
                     frontier.append(move)
                     frontier = heuristic.sort_nodes(frontier, heuristic.sort_by_h)
 
