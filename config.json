@@ -1,6 +1,6 @@
 {
-    "algorithm": "IDDFS", 
+    "algorithm": "IDA*", 
     "checkDeadlocks": true,
-    "heuristic": "simple_lower_bound",
+    "heuristic": "minimum_matching_lower_bound",
     "map": "maps/soko1.txt"
 }

@@ -85,8 +85,16 @@ try:
     print("params: " + results.metrics.params)
     print("success %r" %results.metrics.success)
     print("nodes expanded %d" %results.metrics.nodes_expanded)
-    print("nodes in frontier %d" %results.metrics.frontier)
-    print("cost %d " %results.metrics.cost)
+    print("nodes in frontier %d" %results.metrics.frontier) 
+    
+    #Save heuristics values 
+    #node = results.final_node
+    #with open('heuristic.txt', 'w') as f:
+    #    while node is not None and node.prev is not None:
+    #        f.write(str(node.h))
+    #        f.write('\n')
+    #        node = node.prev
+    
     results.metrics.time = (t1_stop-t1_start)*1000
     results.metrics.depth = depth
     results.metrics.cost = depth

@@ -29,7 +29,7 @@ class IDDFS(SearchMethod):
         
         if(final_node is not None):
             self.metrics.success = True 
-            self.metrics.frontier = len(self.queue)
+            self.metrics.frontier = len(self.queue) + len(self.last_level_nodes)
             return SearchResults(self.metrics, final_node)
             
         self.metrics.success = False
