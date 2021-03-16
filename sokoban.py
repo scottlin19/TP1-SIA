@@ -47,7 +47,7 @@ try:
     print("Elapsed time during the whole program in ms:", (t1_stop-t1_start)*1000) 
 
     node = results.final_node
-    print(node)
+    # print(node)
     steps = []
     depth = 0
 
@@ -81,7 +81,6 @@ try:
     # print("consistent: %r" %consistent)    
     # print("admissible: %r" %admissible)     
     print(steps[::-1])
-    print(len(steps))
     print("depth: %d" %depth)
     print("params: " + results.metrics.params)
     print("success %r" %results.metrics.success)
