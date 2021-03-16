@@ -31,15 +31,13 @@ class BFS(SearchMethod):
                 print('finished with: ' + str(metrics.nodes_expanded))
            
                 return SearchResults(metrics,curr)
-          
+            visited.add(curr)
             moves = board.get_possible_moves(curr,self.checkDeadlocks) #get a tree level
             if(moves): #curr has children
                 metrics.nodes_expanded += 1
             
             for move in moves:
                 if move not in visited:
-                   
-                    visited.add(move)
                     queue.append(move)
                     
         # Queue is empty so there is no solution 

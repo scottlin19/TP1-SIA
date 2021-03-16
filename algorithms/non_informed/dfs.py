@@ -26,7 +26,7 @@ class DFS(SearchMethod):
                 metrics.frontier = len(stack)
                 print('finished with: ' + str(metrics.nodes_expanded))
                 return SearchResults(metrics,curr)
-             
+            visited.add(curr)
             moves = board.get_possible_moves(curr)
             if(moves): #curr has children
                 metrics.nodes_expanded += 1
@@ -34,7 +34,6 @@ class DFS(SearchMethod):
             for move in moves:
                 if move not in visited: 
                     stack.append(move)
-                    visited.add(move)
                     
         # Stack is empty so there is no solution 
         metrics.success = False
