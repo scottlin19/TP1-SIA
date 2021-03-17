@@ -10,7 +10,7 @@ Integrantes:
 
 ### Requerimientos previos
 - Python 3
-- PC compatible con OpenGL 3.3+
+- Sistema compatible con OpenGL 3.3+
 
 ### Instalación
 1. Como primera instancia clonar el proyecto en algun directorio de preferencia:
