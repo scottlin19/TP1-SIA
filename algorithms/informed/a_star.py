@@ -39,15 +39,15 @@ class A_STAR(SearchMethod):
             for move in moves: #save in frontier order by f. If f is equal then order by increasing h
                 if(move not in visited):
                     move.h = heuristic.h(move)
-                    exists = False
-                    for node in frontier:
-                        if(node.__eq__(move)):
-                            exists = True
-                            if(node.depth + node.h > move.depth + move.h):
-                                frontier.remove(node)
-                                bisect.insort(frontier, move)
-                    if not exists:
-                        bisect.insort(frontier, move)
+                    #exists = False
+                    #for node in frontier:
+                    #    if(node.__eq__(move)):
+                    #        exists = True
+                    #        if(node.depth + node.h > move.depth + move.h):
+                    #            frontier.remove(node)
+                    #            bisect.insort(frontier, move)
+                    #if not exists:
+                    bisect.insort(frontier, move)
   
         # Frontier is empty so there is no solution 
         metrics.success = False
