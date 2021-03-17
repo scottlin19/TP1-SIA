@@ -65,7 +65,7 @@ Mapa 'soko1' con A*, heurística simple lower bound y con chequeo de deadlocks:
 ```
 
 ### Mapas personalizados de Sokoban
-Dentro de la carpeta maps es posible crear archivos `.txt` para representar el mapas a solucionar. Los símbolos utilizados son:
+Dentro de la carpeta maps es posible crear archivos `.txt` para representar mapas a solucionar. Los símbolos utilizados son:
 
 - `#`: Representa un bloque de pared
 - `x`: Representa una caja
