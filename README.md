@@ -23,7 +23,7 @@ $> pip3 install -r requirements.txt
 ```
 
 ### Configuración y ejecución
-Dentro del archivo `config.json`, que está en directorio raíz del proyecto, se encuentran todos los parámetros posibles de configuración:
+Dentro del archivo `config.json`, que está en el directorio raíz del proyecto, se encuentran todos los parámetros posibles de configuración:
 
 - "algorithm": algoritmo de búsqueda a utilizar (BFS, DFS, IDDFS, A*, GGS, IDA*).
 - "checkDeadlocks": booleano para indicar si se deben verificar los estados muertos o no.
